@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+    image: manual-instrumentation-example
+    container_name: manual-instrumentation
+    tty: true
+    volumes:
+      - ../../:/workspace
+
+  httpbin:
+    image: kennethreitz/httpbin
+    container_name: httpbin

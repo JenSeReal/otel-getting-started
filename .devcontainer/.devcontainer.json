@@ -1,0 +1,74 @@
+{
+  "name": "otel-manual-instrumentation-lab",
+  "dockerComposeFile": [
+    "../deployment/docker/docker-compose.yml"
+  ],
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+  "forwardPorts": [
+    80,
+    5000
+  ],
+  "portsAttributes": {
+    "80": {
+      "label": "httpbin"
+    },
+    "5000": {
+      "label": "app"
+    }
+  },
+  "service": "app",
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/workspace",
+  "containerEnv": {
+    "SHELL": "/bin/bash"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "[python]": {
+          "diffEditor.ignoreTrimWhitespace": false,
+          "editor.wordBasedSuggestions": "off",
+          "editor.formatOnSave": true,
+          "editor.formatOnPaste": true,
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit",
+            "source.organizeImports": "explicit"
+          }
+        },
+        "[dockercompose][yaml]": {
+          "editor.defaultFormatter": "redhat.vscode-yaml",
+          "editor.formatOnPaste": true,
+          "editor.formatOnSave": true,
+          "editor.insertSpaces": true,
+          "editor.tabSize": 2
+        },
+        "[adoc][markdown]": {
+          "editor.defaultFormatter": "vscode.markdown-language-features",
+          "editor.formatOnPaste": true,
+          "editor.formatOnSave": true,
+          "editor.insertSpaces": true,
+          "editor.tabSize": 2
+        },
+        "[dockerfile]": {
+          "editor.quickSuggestions": {
+            "strings": true
+          },
+          "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+        },
+        "python.analysis.typeCheckingMode": "strict",
+        "python.analysis.autoImportCompletions": true
+      },
+      "extensions": [
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-python.python",
+        "njpwerner.autodocstring",
+        "KevinRose.vsc-python-indent",
+        "usernamehw.errorlens",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}
