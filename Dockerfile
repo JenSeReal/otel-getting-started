@@ -7,14 +7,29 @@ ARG USER_GID=$USER_UID
 
 RUN apt-get -qq update && apt-get -qq upgrade
 
+RUN apt-get -qq install ca-certificates curl
+RUN install -m 0755 -d /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+RUN chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+RUN echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt-get -qq update
+
 RUN apt-get -qq install \
     sudo \
     bash \
     git \
     python3 \
     python3-pip \
-    docker \
-    docker-compose
+    docker-ce \
+    docker-ce-cli \
+    containerd.io \
+    docker-buildx-plugin \
+    docker-compose-plugin
 
 RUN pip3 install \
     requests \
