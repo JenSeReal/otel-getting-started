@@ -6,14 +6,12 @@ services:
     image: otel-getting-started-application:latest
     tty: true
     volumes:
-      - ./:/workspace
-      - /var/run/docker.sock:/var/run/docker.sock
+      - ./labs:/workspace
     ports:
       - 5000:5000
 
   httpbin:
     image: kennethreitz/httpbin
-    container_name: httpbin
 
   tutorial:
     image: otel-getting-started-tutorial:latest

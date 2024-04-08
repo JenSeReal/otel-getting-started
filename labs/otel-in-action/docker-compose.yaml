@@ -1,5 +1,3 @@
-version: '3.1'
-
 services:
 
 ### APPLICATION PART
@@ -73,10 +71,11 @@ services:
 
   loadgenerator:
     image: generator:v0.1
-    networks:
-      - todonet
     build:
       context: ./loadgenerator
+    networks:
+      - todonet
+
 
 ### OTEL PART
 
@@ -110,11 +109,12 @@ services:
 
   otelcol:
     image: ${COLLECTOR_CONTRIB_IMAGE}
+    restart: unless-stopped
     networks:
       - todonet
-    command: ["--config=/etc/otel-collector-config.yaml", ""]
+    command: ["--config=/etc/otel-collector-config.yml", ""]
     volumes:
-      - ./collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - ./collector/otel-collector-config.yml:/etc/otel-collector-config.yml
     ports:
       - "4317:4317"   # OTLP gRPC receiver
       - "4318:4318"
@@ -149,7 +149,7 @@ services:
 
 networks:
   todonet:
-    
+
   # opensearch:
   #   image: ${OPENSEARCH_IMAGE}
   #   container_name: opensearch

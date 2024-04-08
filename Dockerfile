@@ -1,9 +1,10 @@
-FROM gradle:8.7.0-jdk21 as base
+FROM gradle:8-jdk21 as base
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG USERNAME=otel
 ARG USER_UID=1001
 ARG USER_GID=$USER_UID
+ARG DOCKER_REPOSITORY_VERSION=bookworm
 
 RUN apt-get -qq update && apt-get -qq upgrade
 
@@ -14,10 +15,10 @@ RUN chmod a+r /etc/apt/keyrings/docker.asc
 
 RUN echo \
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-    $(. /etc/os-release && echo "bookworm") stable" | \
+    $(. /etc/os-release && echo ${DOCKER_REPOSITORY_VERSION}) stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-RUN apt-get update
+RUN apt-get -qq update
 
 RUN apt-get -qq install \
     python3 \
