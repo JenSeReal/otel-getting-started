@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: otel-getting-started-application:lastest
+    image: otel-getting-started-application:latest
     tty: true
     volumes:
       - ./:/workspace
