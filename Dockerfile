@@ -1,20 +1,33 @@
-FROM gradle:8.7.0-jdk21 as base
+FROM gradle:8-jdk21 as base
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG USERNAME=otel
 ARG USER_UID=1001
 ARG USER_GID=$USER_UID
+ARG DOCKER_REPOSITORY_VERSION=bookworm
 
 RUN apt-get -qq update && apt-get -qq upgrade
 
+RUN apt-get -qq install ca-certificates curl sudo bash git
+RUN install -m 0755 -d /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+RUN chmod a+r /etc/apt/keyrings/docker.asc
+
+RUN echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+    $(. /etc/os-release && echo ${DOCKER_REPOSITORY_VERSION}) stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+RUN apt-get -qq update
+
 RUN apt-get -qq install \
-    sudo \
-    bash \
-    git \
     python3 \
     python3-pip \
-    docker \
-    docker-compose
+    docker-ce \
+    docker-ce-cli \
+    containerd.io \
+    docker-buildx-plugin \
+    docker-compose-plugin
 
 RUN pip3 install \
     requests \

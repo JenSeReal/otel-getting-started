@@ -10,24 +10,20 @@
 		"SHELL": "/bin/bash"
 	},
 	"forwardPorts": [
-		"0.0.0.0:3000",
-		5000,
-		"0.0.0.0:8080"
+		"tutorial:80",
+		"application:5000"
 	],
 	"portsAttributes": {
-		"0.0.0.0:3000": {
-			"label": "Tutorial",
-			"onAutoForward": "notify"
+		"tutorial:80": {
+			"label": "Tutorial"
 		},
-		"0.0.0.0:5000": {
-			"label": "Application",
-			"onAutoForward": "notify"
-		},
-		"8080": {
-			"label": "Otel Collector"
+		"application:5000": {
+			"label": "Manual instrumentation application"
 		}
 	},
-	"features": {},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	},
 	"customizations": {
 		"vscode": {
 			"settings": {

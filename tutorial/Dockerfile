@@ -1,15 +1,27 @@
-FROM golang:1.21-alpine as builder
+FROM golang:1.21-alpine as base
 
 RUN apk add --update --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
     hugo
+
+
+FROM base as builder
 
 WORKDIR /opt/app
 
 COPY . .
 
-RUN wget -qO- https://github.com/McShelby/hugo-theme-relearn/archive/main.zip | busybox unzip -d themes -
+RUN wget -qO- https://github.com/McShelby/hugo-theme-relearn/archive/main.zip | unzip -d themes -
 
 RUN hugo
+
+
+FROM base as rt-dev
+
+WORKDIR /workspace
+
+RUN wget -qO- https://github.com/McShelby/hugo-theme-relearn/archive/main.zip | unzip -d themes -
+
+CMD [ "hugo", "server", "--bind=0.0.0.0", "--port=80", "--poll=700" ]
 
 FROM nginx:1.25-alpine as rt
 
