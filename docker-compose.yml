@@ -20,5 +20,9 @@ services:
     build:
       context: tutorial/
       dockerfile: Dockerfile
+      target: rt
+    tty: true
+    volumes:
+      - ./tutorial:/workspace
     ports:
-      - 3000:80
+      - 1313:80

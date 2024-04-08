@@ -4,7 +4,6 @@ import time
 from abc import ABC, abstractmethod
 
 from faker import Faker
-
 from model.user import User
 
 
