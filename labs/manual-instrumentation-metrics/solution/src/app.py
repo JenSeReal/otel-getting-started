@@ -47,7 +47,7 @@ def get_user():
 def do_stuff():
     time.sleep(0.1)
     url = "http://httpbin:80/anything"
-    response = requests.get(url)
+    _response = requests.get(url)
 
 
 @app.route("/")

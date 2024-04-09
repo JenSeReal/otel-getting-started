@@ -1,45 +1,34 @@
-import psutil
+# pyright: reportMissingTypeStubs=false
 
+from typing import Any
+
+import psutil
 from opentelemetry import metrics
-from opentelemetry.metrics import (
-    Counter,
-    Histogram,
-    ObservableGauge,
-    ObservableUpDownCounter,
-)
+
+# prometheus export
+from opentelemetry.exporter.prometheus import PrometheusMetricReader
+from opentelemetry.metrics import Counter, Histogram, ObservableGauge
 from opentelemetry.sdk.metrics import MeterProvider
 
 # console export
 from opentelemetry.sdk.metrics.export import (
     ConsoleMetricExporter,
-    PeriodicExportingMetricReader,
     MetricReader,
+    PeriodicExportingMetricReader,
 )
-
-# prometheus export
-from opentelemetry.exporter.prometheus import PrometheusMetricReader
-from prometheus_client import start_http_server
 
 # views
 from opentelemetry.sdk.metrics.view import (
-    View,
     DropAggregation,
     ExplicitBucketHistogramAggregation,
+    View,
 )
-
+from prometheus_client import start_http_server
 from resource_utils import create_resource
 
 
 def create_views() -> list[View]:
     views = []
-
-    # change what attributes to report
-    traffic_volume_drop_attributes = View(
-        instrument_type=Counter,
-        instrument_name="traffic_volume",
-        attribute_keys={},
-    )
-    views.append(traffic_volume_drop_attributes)
 
     # change name of an instrument
     traffic_volume_change_name = View(
@@ -47,7 +36,10 @@ def create_views() -> list[View]:
         instrument_name="traffic_volume",
         name="test",
     )
-    views.append(traffic_volume_change_name)
+
+
+
+    views.append(traffic_volume_change_name) # type: ignore
 
     # drop entire intrument
     drop_instrument = View(
@@ -55,7 +47,7 @@ def create_views() -> list[View]:
         instrument_name="process.cpu.utilization",
         aggregation=DropAggregation(),
     )
-    views.append(drop_instrument)
+    views.append(drop_instrument) # type: ignore
 
     # change the aggregation (buckets) for all histogram instruments
     histrogram_explicit_buckets = View(
@@ -63,9 +55,9 @@ def create_views() -> list[View]:
         instrument_name="*",  #  supports wildcard pattern matching
         aggregation=ExplicitBucketHistogramAggregation((1, 21, 50, 100, 1000)),
     )
-    views.append(histrogram_explicit_buckets)
+    views.append(histrogram_explicit_buckets) # type: ignore
 
-    return views
+    return views # type: ignore
 
 
 def create_console_reader(export_interval: int) -> MetricReader:
@@ -96,7 +88,7 @@ def create_meter(name: str, version: str) -> metrics.Meter:
     return meter
 
 
-def create_request_instruments(meter: metrics.Meter) -> dict:
+def create_request_instruments(meter: metrics.Meter) -> dict[str, Any]:
     traffic_volume = meter.create_counter(
         name="traffic_volume",
         unit="request",
@@ -123,7 +115,7 @@ def create_request_instruments(meter: metrics.Meter) -> dict:
 
 
 # units https://opentelemetry.io/docs/specs/semconv/general/metrics/#instrument-units
-def create_resource_instruments(meter: metrics.Meter) -> dict:
+def create_resource_instruments(meter: metrics.Meter) -> dict[str, Any]:
     cpu_util_gauge = meter.create_observable_gauge(
         name="process.cpu.utilization",
         callbacks=[
