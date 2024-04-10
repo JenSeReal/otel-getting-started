@@ -37,8 +37,6 @@ def create_views() -> list[View]:
         name="test",
     )
 
-
-
     views.append(traffic_volume_change_name) # type: ignore
 
     # drop entire intrument
