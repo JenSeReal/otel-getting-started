@@ -4,26 +4,18 @@ from typing import Any
 
 import psutil
 from opentelemetry import metrics
+from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
 
 # prometheus export
-from opentelemetry.exporter.prometheus import PrometheusMetricReader
 from opentelemetry.metrics import Counter, Histogram, ObservableGauge
 from opentelemetry.sdk.metrics import MeterProvider
-
 # console export
-from opentelemetry.sdk.metrics.export import (
-    ConsoleMetricExporter,
-    MetricReader,
-    PeriodicExportingMetricReader,
-)
-
+from opentelemetry.sdk.metrics.export import (MetricReader,
+                                              PeriodicExportingMetricReader)
 # views
-from opentelemetry.sdk.metrics.view import (
-    DropAggregation,
-    ExplicitBucketHistogramAggregation,
-    View,
-)
-from prometheus_client import start_http_server
+from opentelemetry.sdk.metrics.view import (DropAggregation,
+                                            ExplicitBucketHistogramAggregation,
+                                            View)
 from resource_utils import create_resource
 
 
@@ -58,28 +50,22 @@ def create_views() -> list[View]:
     return views # type: ignore
 
 
-def create_console_reader(export_interval: int) -> MetricReader:
-    console_exporter = ConsoleMetricExporter()
+def create_otlp_reader(export_interval: int) -> MetricReader:
+    otlp_exporter = OTLPMetricExporter(insecure=True)
     reader = PeriodicExportingMetricReader(
-        exporter=console_exporter, export_interval_millis=export_interval
+        exporter=otlp_exporter, export_interval_millis=export_interval
     )
-    return reader
-
-
-def create_prometheus_reader(http_server_port: int = 8000) -> MetricReader:
-    start_http_server(port=http_server_port, addr="localhost")
-    reader = PrometheusMetricReader()
     return reader
 
 
 def create_meter(name: str, version: str) -> metrics.Meter:
     views = create_views()
     rc = create_resource(name, version)
-    console_reader = create_console_reader(5000)
-    prom_reader = create_prometheus_reader(8000)
+
+    otlp_reader = create_otlp_reader(5000)
 
     provider = MeterProvider(
-        metric_readers=[console_reader, prom_reader], resource=rc, views=views
+        metric_readers=[otlp_reader], resource=rc, views=views
     )
     metrics.set_meter_provider(provider)
     meter = metrics.get_meter(name, version)
