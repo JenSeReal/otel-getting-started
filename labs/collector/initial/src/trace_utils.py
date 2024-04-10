@@ -1,13 +1,12 @@
 from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
 from resource_utils import create_resource
 
 
 def create_tracing_pipeline() -> BatchSpanProcessor:
-    otlp_exporter = OTLPSpanExporter(insecure=True)
-    span_processor = BatchSpanProcessor(otlp_exporter)
+    exporter = ConsoleSpanExporter()
+    span_processor = BatchSpanProcessor(exporter)
     return span_processor
 
 def create_tracer(name: str, version: str) -> trace.Tracer:

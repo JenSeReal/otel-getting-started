@@ -4,18 +4,24 @@ from typing import Any
 
 import psutil
 from opentelemetry import metrics
-from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
 
 # prometheus export
 from opentelemetry.metrics import Counter, Histogram, ObservableGauge
 from opentelemetry.sdk.metrics import MeterProvider
+
 # console export
-from opentelemetry.sdk.metrics.export import (MetricReader,
-                                              PeriodicExportingMetricReader)
+from opentelemetry.sdk.metrics.export import (
+    ConsoleMetricExporter,
+    MetricReader,
+    PeriodicExportingMetricReader,
+)
+
 # views
-from opentelemetry.sdk.metrics.view import (DropAggregation,
-                                            ExplicitBucketHistogramAggregation,
-                                            View)
+from opentelemetry.sdk.metrics.view import (
+    DropAggregation,
+    ExplicitBucketHistogramAggregation,
+    View,
+)
 from resource_utils import create_resource
 
 
@@ -51,9 +57,9 @@ def create_views() -> list[View]:
 
 
 def create_otlp_reader(export_interval: int) -> MetricReader:
-    otlp_exporter = OTLPMetricExporter(insecure=True)
+    exporter = ConsoleMetricExporter()
     reader = PeriodicExportingMetricReader(
-        exporter=otlp_exporter, export_interval_millis=export_interval
+        exporter=exporter, export_interval_millis=export_interval
     )
     return reader
 
