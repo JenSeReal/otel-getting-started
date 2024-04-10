@@ -5,6 +5,28 @@ draft: false
 weight: 4
 ---
 
+### setup
+
+#### GitHub Codespaces
+If you want to use **VS Code**, you have two options.
+One option is to use GitHub codespaces.
+Open the [repository](https://github.com/JenSeReal/otel-getting-started/) in your browser, click on `Code` and `Create Codespaces on main`.
+
+#### local VS Code
+```sh
+git clone https://github.com/JenSeReal/otel-getting-started/
+```
+
+If you want to run the lab with your local VS Code, install Microsoft's Dev Containers extension.
+Open the repository folder and hit `Ctrl` + `Shift` + `P` to open the command palette.
+Run `Dev Container: Reopen in Container` attach yourself to the development container.
+
+---
+
+### Where to find the code
+You can find the code inside `manual-instrumentation-logs/initial`.
+You can run the application with the task `Run manual-instrumentation-logs initial application` or with `python3 manual-instrumentation-logs/initial/src/app.py`
+
 ### How did we get here
 
 Logs are one of the main pillars of observability and part of the MELT acronym (Logs, Metrics, Traces and Events) and is therefore incredibly important to determine the behavior and health of a system. Logs have the longest legacy among all the signals. For decades simple instructions were used to print debug output to files or stdout like `Sytem.out.println("Hello, World!")` in Java, `print('Hello, World!')` in Python or the `println!("Hello, World!")` Macro in Rust. Thereby Logs can represent any data you want. It could be structured data like `JSON`
