@@ -54,8 +54,8 @@ This lab demonstrates how to add traces to a Python application. The service is 
 We chose Python because its simple syntax keeps code snippets concise and readable.
 
 ```sh
-opentelemetry-api==1.21.0
-opentelemetry-sdk==1.21.0
+opentelemetry-api==1.24.0
+opentelemetry-sdk==1.24.0
 opentelemetry-semantic-conventions==0.42b0
 ```
 
@@ -166,7 +166,7 @@ It handles the creation of a new Span object, attaches it to the current context
         "attributes": {
             "telemetry.sdk.language": "python",
             "telemetry.sdk.name": "opentelemetry",
-            "telemetry.sdk.version": "1.21.0",
+            "telemetry.sdk.version": "1.24.0",
             "service.name": "unknown_service"
         },
     }
@@ -225,7 +225,7 @@ Inside `create_tracer`, we pass the value returned by `create_resource` to the `
     "attributes": {
         "telemetry.sdk.language": "python",
         "telemetry.sdk.name": "opentelemetry",
-        "telemetry.sdk.version": "1.21.0",
+        "telemetry.sdk.version": "1.24.0",
         "service.name": "app.py",
         "service.version": "0.1"
     },

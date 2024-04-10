@@ -48,8 +48,8 @@ We'll use one to start the application's web server and the other to send reques
 This lab demonstrates how to add traces to a Python application. The service is built using the [Flask](https://flask.palletsprojects.com) web framework.
 We chose Python because its simple syntax keeps code snippets concise and readable.
 ```sh
-opentelemetry-api==1.21.0
-opentelemetry-sdk==1.21.0
+opentelemetry-api==1.24.0
+opentelemetry-sdk==1.24.0
 opentelemetry-semantic-conventions==0.42b0
 ```
 
@@ -192,7 +192,7 @@ Start the web server with `python app.py` and use the second terminal to send a 
     "attributes": {
         "telemetry.sdk.language": "python",
         "telemetry.sdk.name": "opentelemetry",
-        "telemetry.sdk.version": "1.21.0",
+        "telemetry.sdk.version": "1.24.0",
         "service.name": "unknown_service"
     },
 },
