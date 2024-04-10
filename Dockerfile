@@ -36,6 +36,7 @@ RUN pip3 install \
     opentelemetry-api \
     opentelemetry-sdk \
     opentelemetry-exporter-prometheus \
+    opentelemetry-exporter-otlp \
     psutil
 
 WORKDIR /workspace

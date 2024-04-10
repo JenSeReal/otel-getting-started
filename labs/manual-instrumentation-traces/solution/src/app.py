@@ -1,16 +1,16 @@
+# pyright: reportMissingTypeStubs=false, reportUnknownParameterType=false, reportMissingParameterType=false, reportUnknownArgumentType=false
+
 import time
+
 import requests
-from flask import Flask, request, make_response
-
-from opentelemetry.trace import get_current_span
-from opentelemetry.semconv.trace import SpanAttributes
+from client import ChaosClient, FakerClient
+from flask import Flask, make_response, request
 from opentelemetry import context
-from opentelemetry.propagate import inject, extract
-
+from opentelemetry.propagate import extract, inject
+from opentelemetry.semconv.trace import SpanAttributes
+from opentelemetry.trace import get_current_span
 from trace_utils import create_tracer
-from client import FakerClient, ChaosClient
 
-# global variables
 app = Flask(__name__)
 tracer = create_tracer("app.py", "0.1")
 
@@ -44,10 +44,10 @@ def get_user():
 def do_stuff():
     headers = {}
     inject(headers)
-    
+
     time.sleep(.1)
     url = "http://httpbin:80/anything"
-    response = requests.get(url, headers=headers)
+    _response = requests.get(url, headers=headers)
 
 @tracer.start_as_current_span("index")
 @app.route('/')
