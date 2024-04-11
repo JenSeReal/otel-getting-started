@@ -3,14 +3,6 @@ image: maeddes/gitpod:full
 
 tasks:
   - name: Add Python Otel libs
-    command: pip3 install \
-                  requests \
-                  flask \
-                  Faker \
-                  opentelemetry-api \
-                  opentelemetry-sdk \
-                  opentelemetry-exporter-prometheus \
-                  opentelemetry-exporter-otlp \
-                  psutil
+    command: pip3 install requests flask Faker opentelemetry-api opentelemetry-sdk opentelemetry-exporter-prometheus opentelemetry-exporter-otlp
   - name: Start tutorial
     command: docker compose up httpbin tutorial
