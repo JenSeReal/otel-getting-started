@@ -18,38 +18,32 @@ The lab environment is deliberately designed to be as minimal as possible. It ai
 #### GitHub Codespaces
 If you want to use **VS Code**, you have two options.
 One option is to use GitHub codespaces.
-Open the [repository](https://github.com/jtl-novatec/otel-manual-instrumentation-lab.git) in your browser, click on `Code` and `Create Codespaces on main`.
+Open the [repository](https://github.com/JenSeReal/otel-getting-started/) in your browser, click on `Code` and `Create Codespaces on main`.
 
 #### local VS Code
 ```sh
-git clone https://github.com/jtl-novatec/otel-manual-instrumentation-lab.git
+git clone https://github.com/JenSeReal/otel-getting-started/
 ```
 
 If you want to run the lab with your local VS Code, install Microsoft's Dev Containers extension.
 Open the repository folder and hit `Ctrl` + `Shift` + `P` to open the command palette.
 Run `Dev Container: Reopen in Container` attach yourself to the development container.
 
-#### terminal-based text editor
-
-```sh
-git clone https://github.com/jtl-novatec/otel-manual-instrumentation-lab.git
-
-cd ./otel-manual-instrumentation-lab/deployment/docker
-docker compose up --detach
-
-docker exec -it manual-instrumentation /bin/bash
-```
-If you prefer to use a terminal-based text editor instead, spin up the lab environment manually via the `docker compose` command.
-
 ---
+
+### Where to find the code
+You can find the code inside `manual-instrumentation-metrics/initial`.
+You can run the application with the task `Run manual-instrumentation-metrics initial application` or with `python3 manual-instrumentation-metrics/initial/src/app.py`
+
+### Let's start
 
 Regardless of your setup, open two separate terminals with a shell in the container.
 We'll use one to start the application's web server and the other to send requests to the service endpoints.
 This lab demonstrates how to add traces to a Python application. The service is built using the [Flask](https://flask.palletsprojects.com) web framework.
 We chose Python because its simple syntax keeps code snippets concise and readable.
 ```sh
-opentelemetry-api==1.21.0
-opentelemetry-sdk==1.21.0
+opentelemetry-api==1.24.0
+opentelemetry-sdk==1.24.0
 opentelemetry-semantic-conventions==0.42b0
 ```
 
@@ -192,7 +186,7 @@ Start the web server with `python app.py` and use the second terminal to send a 
     "attributes": {
         "telemetry.sdk.language": "python",
         "telemetry.sdk.name": "opentelemetry",
-        "telemetry.sdk.version": "1.21.0",
+        "telemetry.sdk.version": "1.24.0",
         "service.name": "unknown_service"
     },
 },

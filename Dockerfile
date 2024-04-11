@@ -34,7 +34,10 @@ RUN pip3 install \
     flask \
     Faker \
     opentelemetry-api \
-    opentelemetry-sdk
+    opentelemetry-sdk \
+    opentelemetry-exporter-prometheus \
+    opentelemetry-exporter-otlp \
+    psutil
 
 WORKDIR /workspace
 

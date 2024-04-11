@@ -10,5 +10,5 @@ logger_provider = LoggerProvider(
     ),
 )
 
-logger_provider.add_log_record_processor(SimpleLogRecordProcessor(ConsoleLogExporter()))
+logger_provider.add_log_record_processor(SimpleLogRecordProcessor(exporter=ConsoleLogExporter()))
 handler = LoggingHandler(logger_provider=logger_provider)
