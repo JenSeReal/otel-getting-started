@@ -10,16 +10,27 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push-image:
+  get-env-vars:
+    name: Get Environment vars
     runs-on: ubuntu-latest
+    outputs:
+      REGISTRY: ${{ env.REGISTRY }}
+      IMAGE_NAME: ${{ env.IMAGE_NAME }}
+    steps:
+      - run: echo "null"
+
+  build-and-push-image:
+    name: Build and publish docker images
+    runs-on: ubuntu-latest
+    needs: [get-env-vars]
     strategy:
       fail-fast: false
       matrix:
         include:
           - dockerfile: Dockerfile
-            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/application
+            image: ${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.IMAGE_NAME }}/application
           - dockerfile: tutorial/Dockerfile
-            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/tutorial
+            image: ${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.IMAGE_NAME }}/tutorial
     permissions:
       contents: read
       packages: write
