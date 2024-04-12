@@ -62,7 +62,6 @@ jobs:
           context: .
           file: ${{ matrix.dockerfile }}
           platforms: ${{ matrix.platform }}
-          tags: ${{ matrix.image }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,name=${{ matrix.image }},push-by-digest=true,name-canonical=true,push=true
 
