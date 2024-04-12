@@ -8,6 +8,11 @@ receivers:
 
 processors:
   batch:
+  attributes/example:
+    actions:
+      - key: example_field
+        action: insert
+        value: Hello from the OpenTelemetry Collector
 
 exporters:
   debug:
@@ -25,5 +30,5 @@ service:
       exporters: [debug]
     logs:
       receivers: [otlp]
-      processors: [batch]
+      processors: [batch, attributes/example]
       exporters: [debug]
