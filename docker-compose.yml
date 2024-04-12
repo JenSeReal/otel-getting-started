@@ -1,9 +1,9 @@
 services:
   application:
+    image: ghcr.io/JenSeReal/otel-getting-started/application:latest
     build:
       context: .
       dockerfile: Dockerfile
-    image: otel-getting-started-application:latest
     tty: true
     volumes:
       - ./labs:/workspace
@@ -14,7 +14,7 @@ services:
     image: kennethreitz/httpbin
 
   tutorial:
-    image: otel-getting-started-tutorial:latest
+    image:  ghcr.io/JenSeReal/otel-getting-started/tutorial:latest
     build:
       context: tutorial/
       dockerfile: Dockerfile
