@@ -4,5 +4,8 @@ image: maeddes/gitpod:full
 tasks:
   - name: Add Python Otel libs
     command: pip3 install requests flask Faker opentelemetry-api opentelemetry-sdk opentelemetry-exporter-prometheus opentelemetry-exporter-otlp
+  - name: Enable httpbin
+    init: echo 127.0.0.1 httpbin | sudo tee -a /etc/hosts
+    command: docker run -p 80:80 kennethreitz/httpbin
   - name: Start tutorial
-    command: docker compose up httpbin tutorial
+    command: docker compose up tutorial
