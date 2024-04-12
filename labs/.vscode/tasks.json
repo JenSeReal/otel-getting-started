@@ -46,6 +46,12 @@
       "problemMatcher": []
     },
     {
+      "label": "Run collector solution application",
+      "type": "shell",
+      "command": "python3 collector/solution/src/app.py",
+      "problemMatcher": []
+    },
+    {
       "label": "Run collector initial",
       "type": "shell",
       "command": "docker compose -f collector/initial/docker-compose.yml up",
