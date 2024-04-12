@@ -10,6 +10,8 @@ The repository utilizes VS Code [Dev Containers](https://code.visualstudio.com/d
 * Open this repository in [GitHub Codespaces](https://codespaces.new/JenSeReal/otel-getting-started) or in [Gitpod](https://gitpod.io/#https://github.com/JenSeReal/otel-getting-started)
 * Or install [Docker](https://docs.docker.com/engine/install/), [VS Code](https://code.visualstudio.com/download) and the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
+With [GitHub Codespaces](https://codespaces.new/JenSeReal/otel-getting-started) a VS Instance in your browser will be opened automatically
+
 The Dev Container spec will automatically open the labs part with a fully fledged and configured IDE and expose the tutorial on a port to your local system.
 
 ## How to navigate around the IDE
