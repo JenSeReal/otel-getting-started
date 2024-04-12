@@ -5,20 +5,7 @@ on:
     branches: ["**"] # run for any commit or tag push on any branch
     tags-ignore: ["v**"] # reserve v* tags for releases
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
-  get-env-vars:
-    name: Get Environment vars
-    runs-on: ubuntu-latest
-    outputs:
-      REGISTRY: ${{ env.REGISTRY }}
-      IMAGE_NAME: ${{ env.IMAGE_NAME }}
-    steps:
-      - run: echo "null"
-
   build-and-push-image:
     name: Build and publish docker images
     runs-on: ubuntu-latest
@@ -28,9 +15,9 @@ jobs:
       matrix:
         include:
           - dockerfile: Dockerfile
-            image: ${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.IMAGE_NAME }}-application
+            image: ghcr.io/${{ github.repository }}-application
           - dockerfile: tutorial/Dockerfile
-            image: ${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.IMAGE_NAME }}-tutorial
+            image: ghcr.io/${{ github.repository }}-tutorial
         platform:
           - linux/amd64
           - linux/arm/v6
@@ -101,8 +88,8 @@ jobs:
       fail-fast: false
       matrix:
         images:
-          - ${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.IMAGE_NAME }}-application
-          - ${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.IMAGE_NAME }}-tutorial
+          - ghcr.io/${{ github.repository }}-application
+          - ghcr.io/${{ github.repository }}-tutorial
     steps:
       - name: Download Digests
         uses: actions/download-artifact@v4
@@ -116,7 +103,7 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ needs.get-env.outputs.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -124,7 +111,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.REGISTRY_IMAGE }}
+          images: ghcr.io/${{ needs.get-env.outputs.REGISTRY_IMAGE }}
           tags: |
             type=ref,event=branch
             type=ref,event=tag
@@ -135,8 +122,8 @@ jobs:
         working-directory: /tmp/digests
         run: |
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.REGISTRY_IMAGE }}@sha256:%s ' *)
+            $(printf 'ghcr.io/${{ needs.get-env.outputs.REGISTRY_IMAGE }}@sha256:%s ' *)
 
       - name: Inspect image
         run: |
-          docker buildx imagetools inspect ${{ needs.get-env.outputs.REGISTRY }}/${{ needs.get-env.outputs.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
+          docker buildx imagetools inspect ghcr.io/${{ needs.get-env.outputs.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
