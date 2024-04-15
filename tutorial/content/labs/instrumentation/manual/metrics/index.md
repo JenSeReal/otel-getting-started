@@ -5,7 +5,7 @@ draft: false
 weight: 3
 ---
 
-### metrics in OpenTelemetry
+### Metrics in OpenTelemetry
 
 A `MetricReader` in OpenTelemetry is an interface that defines how to read metrics from the SDK. It is responsible for collecting metrics data from the SDK and exporting it to a backend system for storage and analysis. There are different types of `MetricReader` implementations, such as `PeriodicExportingMetricReader`, which collects metrics at regular intervals and exports them to a backend.
 
@@ -13,21 +13,14 @@ The metric data model in OpenTelemetry defines the structure of the data that is
 
 The lab environment is deliberately designed to be as minimal as possible. It aims to teach fundamental concepts of OpenTelemetry over providing a highly a realistic deployment scenario.
 
-### setup
-
-#### GitHub Codespaces
-If you want to use **VS Code**, you have two options.
-One option is to use GitHub codespaces.
-Open the [repository](https://github.com/JenSeReal/otel-getting-started/) in your browser, click on `Code` and `Create Codespaces on main`.
-
-#### local VS Code
-```sh
-git clone https://github.com/JenSeReal/otel-getting-started/
-```
-
-If you want to run the lab with your local VS Code, install Microsoft's Dev Containers extension.
-Open the repository folder and hit `Ctrl` + `Shift` + `P` to open the command palette.
-Run `Dev Container: Reopen in Container` attach yourself to the development container.
+### How to perform the exercise
+* You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
+* Initial directory: `labs/manual-instrumentation-metrics/initial`
+* Solution directory: `labs/manual-instrumentation-metrics/solution`
+* Source code: `labs/manual-instrumentation-metrics/initial/src`
+* How to run the application either:
+  * Run the task for the application: `RRun manual-instrumentation-metrics initial application` (runs the Python application)
+  * Run the application with Terminal commands `python3 src/app.py` (runs the Python application)
 
 ---
 

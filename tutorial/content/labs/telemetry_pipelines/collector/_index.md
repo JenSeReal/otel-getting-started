@@ -4,6 +4,15 @@ draft: false
 weight: 1
 ---
 
+### How to perform the exercise
+* You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
+* Initial directory: `labs/collector/initial`
+* Solution directory: `labs/collector/solution`
+* Source code: `labs/collector/initial/src`
+* How to run the application either:
+  * Run the task for the application: `Run collector initial application` (runs the Python application) and `Run collector initial` (runs the OpenTelemetry Collector in a Docker Container)
+  * Run the application with Terminal commands `python3 src/app.py` (runs the Python application) and `docker compose up` (runs the OpenTelemetry Collector in a Docker Container)
+
 ### Why do we need Collectors?
 
 Over the previous labs, we have seen how OpenTelemetry's SDK implements the instrumentation which produces the telemetry data.
@@ -20,18 +29,18 @@ Deploying a Collector has many advantages.
 Most importantly, it allows for a cleaner separation of concerns.
 Developers shouldn't have to care about what happens to telemetry after it has been generated.
 With a collector, operators are able to control the telemetry configuration without having to modify the application code.
-Additionally, consolidating these concerns in a central location streamlines maintaince.
-In a SDK-based approach, the configuration of where telemetry is going, what format it needs to be in, and it should be processed is spread across various codebases managed by separate teams.
+Additionally, consolidating these concerns in a central location streamlines maintenance.
+In an SDK-based approach, the configuration of where telemetry is going, what format it needs to be in, and it should be processed is spread across various codebases managed by separate teams.
 However, telemetry pipelines are rarely specific to individual applications.
 Without a collector, making adjustments to the configuration and keeping it consistent across applications can get fairly difficult.
 Moving things out of the SDK has other benefits.
-For instance, the overal configuration of the SDK becomes much leaner.
-Moreover, we no longer have to re-deploy the application everytime we make a change to the telemetry pipeline.
+For instance, the overall configuration of the SDK becomes much leaner.
+Moreover, we no longer have to re-deploy the application every time we make a change to the telemetry pipeline.
 Troubleshooting becomes significantly easier, since there is only a single location to monitor when debugging problems related to telemetry processing.
 Offloading processing and forwarding to another process means applications can spend their resources on performing actual work, rather than dealing with telemetry.
 Before going into more detail, let's look at the components that make up a collector.
 
-### architecture of a collector pipeline
+### Architecture of a collector pipeline
 {{< figure src="images/collector_arch.drawio.svg" width=600 caption="collector to process and forward telemetry" >}}
 
 The pipeline for a telemetry signal consists of a combination of receivers, processors, and exporters.
@@ -94,7 +103,7 @@ It is also possible for receivers and exporters to be shared by pipelines.
 If the same receiver is used in different pipelines, each pipeline receives a replica of the data stream.
 If different pipelines target the same exporter, the data stream will be merged into one.
 
-### define a basic collector pipeline
+### Define a basic collector pipeline
 
 Let's put the knowledge into practice.
 Open the `docker-compose.yml` file to review the lab environment.

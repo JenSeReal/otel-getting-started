@@ -18,27 +18,14 @@ resourcedetector
 
 The lab environment is deliberately designed to be as minimal as possible. It aims to teach fundamental concepts of OpenTelemetry over providing a highly a realistic deployment scenario.
 
-### setup
-
-#### GitHub Codespaces
-If you want to use **VS Code**, you have two options.
-One option is to use GitHub codespaces.
-Open the [repository](https://github.com/JenSeReal/otel-getting-started/) in your browser, click on `Code` and `Create Codespaces on main`.
-
-#### local VS Code
-```sh
-git clone https://github.com/JenSeReal/otel-getting-started/
-```
-
-If you want to run the lab with your local VS Code, install Microsoft's Dev Containers extension.
-Open the repository folder and hit `Ctrl` + `Shift` + `P` to open the command palette.
-Run `Dev Container: Reopen in Container` attach yourself to the development container.
-
----
-
-### Where to find the code
-You can find the code inside `manual-instrumentation-traces/initial`.
-You can run the application with the task `Run manual-instrumentation-traces initial application` or with `python3 manual-instrumentation-traces/initial/src/app.py`
+### How to perform the exercise
+* You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
+* Initial directory: `labs/manual-instrumentation-traces/initial`
+* Solution directory: `labs/manual-instrumentation-traces/solution`
+* Source code: `labs/manual-instrumentation-traces/initial/src`
+* How to run the application either:
+  * Run the task for the application: `RRun manual-instrumentation-traces initial application` (runs the Python application)
+  * Run the application with Terminal commands `python3 src/app.py` (runs the Python application)
 
 ---
 
@@ -58,7 +45,7 @@ The output reveals that OpenTelemetry's API and SDK packages have already been i
 
 ### configure tracing pipeline and obtain a tracer
 
-{{< figure src="images/tracer.drawio_pipeline.svg" width=600 caption="tracing signal" >}}
+{{< figure src="images/tracer.drawio_pipeline.svg" width=600 caption="Overview of how the tracing signal is created and processed" >}}
 
 ```py { title="trace_utils.py" }
 # OTel SDK
