@@ -23,6 +23,7 @@ RUN apt-get -qq update
 RUN apt-get -qq install \
     python3 \
     python3-pip \
+    python-is-python3 \
     docker-ce \
     docker-ce-cli \
     containerd.io \

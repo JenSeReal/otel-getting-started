@@ -57,7 +57,7 @@ def create_tracing_pipeline() -> BatchSpanProcessor:
     return span_processor
 ```
 
-Inside the `src` directory, create a new file `trace_utils.py`.
+Inside the `src` directory, create a new file `trace_utils.py` with the code displayed above.
 We'll use it to separate tracing-related configuration from the main application.
 At the top of the file, specify the imports as shown above.
 Create a new function `create_tracing_pipeline`.
