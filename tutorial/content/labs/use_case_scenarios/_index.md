@@ -16,12 +16,12 @@ It furthermore provides a lookout to the various chapters of this lab.
 
 The following diagram explains the architecture:
 
--- TODO: DIAGRAM IN HERE --
-
 - there is an simple underlying polylot, multi-service application
   - the components are implemented in Java (Spring Boot) and Python (Flask)
   - two alternate frontend connect to a backend part, which in turn connects to a Postgres database
   - there is a simple load-generator, which continuesly sends load to the frontend components
+
+{{< figure src="images/application_diagram.png" width=700 caption="Application Architecture" >}}
 
 - the application components are already instrumented by an OpenTelemetry agent
 
@@ -29,8 +29,9 @@ The following diagram explains the architecture:
 
 - the OpenTelemetry Collector exports the information to various thirs-party applications
   - the (distributed) traces are exported to a Jaeger instance
-  - the metrics are exported to a Prometheus instance (Grafana?)
-  - the logs are exported to an OpenSearch instance? 
+  - the metrics are exported to a Prometheus instance 
+
+{{< figure src="images/application_instrumented.png" width=700 caption="Application Architecture Instrumented" >}}
 
 The entire stack of components is modeled in containers and can be run using a docker-compose file.
 
