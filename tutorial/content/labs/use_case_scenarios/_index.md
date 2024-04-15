@@ -271,3 +271,54 @@ Of course this also makes a lot of sense to compare multiple traces of exactly t
 
 # Metrics
 
+Next to tracing OpenTelemetry also provides the ability to export metrics information to various third-party applications. For this scenario we used the popular option Prometheus [Prometheus](https://prometheus.io).
+
+The OpenTelemetry collector is configured to export the metrics to the Prometheus exporter. Prometheus is an open-source monitoring technology that stores metrics in a time-series database. Prometheus works in a way that it does not receive the metrics from a certain source, but scrapes the metrics from predefined sources that collect them.
+
+So in our case Prometheus is configured to talk to the collector and scrape the metrics from there.
+
+A very common way to visualize Prometheus is using dashboards of tool called Grafana. However Prometheus also has a built-in expression browser, which will do fine for this use case.
+
+You can access the web UI on the following [link](http://localhost:9090).
+
+The main entry screen looks like this:
+
+{{< figure src="images/prometheus_start_screen.png" width=700 caption="Prometheus Start Screen" >}} 
+
+There isn't much displayed right when you start. To get a list of all the metrics that are currently available click on the little icon called the metrics explorer:
+
+{{< figure src="images/prometheus_metrics_explorer.png" width=300 caption="Prometheus Metrics Explorer" >}}
+
+This will open a pop-up window with a list of all metrics. You can scroll and select the one you like or narrow down the search by typing a certain selection string. The prefix of all the various metrics indicate the groups of collected information.
+
+E.g. you can see that there is a range of metrics coming from the OpenTelemetry collector itself, if you type in "otel".
+
+{{< figure src="images/prometheus_otel_metrics.png" width=700 caption="Prometheus OpenTelemetry Metrics" >}}
+
+If you want to find out about the metrics that Java agents collect, start typing in "jvm".
+You will also get a list of JVM specific metrics here.
+
+{{< figure src="images/prometheus_jvm_metrics.png" width=700 caption="Prometheus JVM Metrics" >}}
+
+Select "JVM Thread Count". It will take you to a tabular output of the information collected so far.
+This may of course look different on your screen depending on the time you already have been collecting.
+
+{{< figure src="images/prometheus_graph_jvm_thread_count.png" width=700 caption="Prometheus Table JVM Thread Count" >}}
+
+If you select the tab "Graph" instead of "Table" the data is visualized in a graphical form. You can adjust the time range as well.
+
+{{< figure src="images/prometheus_graph_jvm_thread_count.png" width=700 caption="Prometheus Graph JVM Thread Count" >}}
+
+Further meaningful visualization could be JVM memory usage:
+
+{{< figure src="images/prometheus_graph_jvm_memory_used.png" width=700 caption="Prometheus Graph JVM Memory Usage" >}}
+
+And garbage collection duration:
+
+{{< figure src="images/prometheus_graph_jvm_gc_duration.png" width=700 caption="Prometheus Graph JVM Gargabe Collection Duration" >}}
+
+We are not going to analyze individual metrics in this chapter. This is more meant to demonstrate the breadth of information, which the standard OpenTelemetry agent for Java provides. This is similar to the analysis in the traces section. 
+
+If the collected metrics of the auto-configured agents are not enough, manual instrumentation can be used.
+It also becomes ovious that there are no Python or Flask metrics being collected. This is how the configuration is set up in this case.
+
