@@ -1,7 +1,7 @@
 ---
 title: "telemetry pipelines"
 draft: false
-weight: 3
+weight: 30
 ---
 
 So far, we looked at how OpenTelemetry enables vendor-agnostic instrumentation.

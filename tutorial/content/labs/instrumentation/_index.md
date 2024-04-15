@@ -1,7 +1,7 @@
 +++
 title = "instrumentation"
 draft = false
-weight = 2
+weight = 20
 +++
 
 The OpenTelemetry project is organized as a set of telemetry signals.

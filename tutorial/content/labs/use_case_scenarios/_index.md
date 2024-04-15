@@ -1,7 +1,7 @@
 ---
-title: "Integrated Usage Scenario"
+title: "OpenTelemetry in Action"
 draft: false
-weight: 3
+weight: 10
 ---
 
 ## Intro

@@ -2,7 +2,7 @@
 title: "signal correlation (optional)"
 date: 2023-12-06T09:43:24+01:00
 draft: false
-weight: 3
+weight: 40
 ---
 
 So far, we have seen that OpenTelemetry provides a framework to generate logs, metrics, and traces with vendor-agnostic instrumentation.
