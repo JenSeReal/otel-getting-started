@@ -267,3 +267,6 @@ Click on "Compare Traces". A new window will show up displaying the traces in a 
 {{< figure src="images/jaeger_flow_compare.png" width=700 caption="Web UI with new item" >}}
 
 Of course this also makes a lot of sense to compare multiple traces of exactly the same invocation type at different times. Hope you like this!
+
+# Metrics
+
