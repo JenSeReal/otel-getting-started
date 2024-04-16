@@ -184,6 +184,7 @@ Since no tracing is set up, the `trace_id` and `span_id` are `0`. There are many
 * https://github.com/open-telemetry/opentelemetry-python
 * https://opentelemetry-python-contrib.readthedocs.io/en/latest/instrumentation/logging/logging.html
 
+<!--
 ### Knowledge check
 
 1. **Question**: OpenTelemetry provides a standardized way to collect and export logs.
@@ -227,3 +228,4 @@ Since no tracing is set up, the `trace_id` and `span_id` are `0`. There are many
 * Learn how to log complex structures
 * Understand the integration of OpenTelemetry logging into Python applications through manual and automatic instrumentation.
 * Review the structure of OpenTelemetry logs and the role of trace and span IDs in log entries.
+-->
