@@ -22,7 +22,7 @@ However, newcomers often feel overwhelmed when getting into OpenTelemetry.
 The reason is clear: OpenTelemetry is a vast endeavor that addresses a multitude of problems by creating a comprehensive observability framework.
 Before you dive into the labs, we want to give you a high-level overview of the structure and scope of the project.
 
-### signal specification (language-agnostic)
+#### signal specification (language-agnostic)
 On a high level, OpenTelemetry is organized into *signals*, which mainly include *tracing*, *metrics*, *logging* and *baggage*.
 Every signal is developed as a standalone component (but there are ways to connect data streams to another).
 Signals are defined inside OpenTelemetry's *language-agnostic* [specification](https://opentelemetry.io/docs/specs/), which lies at the very heart of the project.
@@ -48,7 +48,7 @@ For example, OpenTelemetry defines [semantic conventions](https://opentelemetry.
 By pushing for consistency in the naming and interpretation of common telemetry metadata, OpenTelemetry aims to reduce the need to normalize data coming from different sources.
 Finally, there is also the [OpenTelemetry Protocol (OTLP)](https://opentelemetry.io/docs/specs/otlp/), which we'll cover later.
 
-### vendor-agnostic instrumentation (language-specific) 
+#### vendor-agnostic instrumentation (language-specific) 
 {{< figure src="images/otel_implementation.drawio.png" width=600 caption="generate and emit telemetry via the OTel API and SDK packages" >}}
 
 To generate and emit telemetry from applications, we use **language-*specific* implementations**, which adhere to OpenTelemetry's specification.
@@ -108,7 +108,7 @@ But if OpenTelemetry is used in the right way and configured well - the benefits
 The benefit of instrumenting code with OpenTelemetry to collect telemetry data is that the correlation of the previously mentioned signals is simplified since all signals carry metadata. Correlating telemetry data enables you to connect and analyze data from various sources, providing a comprehensive view of your system's behavior. By setting a unique correlation ID for each telemetry item and propagating it across network boundaries, you can track the flow of data and identify dependencies between different components. OpenTelemetry's trace ID can also be leveraged for correlation, ensuring that telemetry data from the same request or transaction is associated with the same trace. Correlation engines can further enhance this process by matching data based on correlation IDs, trace IDs, or other attributes like timestamps, allowing for efficient aggregation and analysis. Correlated telemetry data provides valuable insights for troubleshooting, performance monitoring, optimization, and gaining a holistic understanding of your system's behavior. In the labs' chapter you will see how correlated data looks like. Traditionally this had to be done by hand or just by timestamps which was a tedious task. -->
 
 
-### telemetry processor (stand-alone component)
+#### telemetry processor (stand-alone component)
 {{< figure src="images/otel_collector_overview.drawio.png" width=650 caption="processing and fowarding telemetry to backends" >}}
 
 So far, we have seen that OpenTelemetry provides tooling for vendor-agnostic instrumentation to application and library developers.
@@ -128,7 +128,7 @@ To build and configure such telemetry pipelines, operations teams often deploy a
 A popular example is the [fluentbit](https://fluentbit.io/) telemetry agents.
 Similarly, OpenTelemetry provides a standalone component with these capabilities: the OpenTelemetry [Collector](https://opentelemetry.io/docs/collector/).
 
-### wire protocol
+#### wire protocol
 
 Completing the package of standardization, generation and management, OpenTelemetry also defines how to transport telemetry between producers, agents, and backends.
 The [OpenTelemetry Protocol (OTLP)](https://opentelemetry.io/docs/specs/otel/protocol/) is an open-source and vendor-neutral wire format that defines:
