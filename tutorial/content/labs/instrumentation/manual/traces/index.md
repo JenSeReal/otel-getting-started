@@ -486,6 +486,7 @@ Now, the service should recognize the tracing header of the incoming request and
 Finally, context propagation is working as expected.
 If we were to export spans to a tracing backend, it could analyze the SpanContext of the individual objects and piece together a distributed trace.
 
+<!-- 
 ## quiz
 
 {{< quizdown >}}
@@ -558,6 +559,4 @@ This makes it trivial to share it across different telemetry signals and service
 To implement it simply inherit from the `ResourceDetector` class and override the `detect` method.
 Finally, we simply call the `merge` method on the `Resource` object, which combines both and returns a new object.
 
-## finish
-
-Congratulations on successfully completing the lab on distributed tracing with OpenTelemetry.
+-->
