@@ -66,11 +66,67 @@ Therefore, not all languages come with support for auto-instrumentation.
 
 #### excercise
 
+Make sure the docker compose environment from Otel in Action chapter is stopped.
+Otherwise you will run into port conflicts.
+
 ```sh
-git clone https://github.com/jtl-novatec/otel-training-tracing-lab.git
-cd ./otel-training-tracing-lab/
+cd labs/auto-instrumentation/initial/todobackend-springboot
 ```
-Clone the repository and change into the directory for this lab.
+
+Build the project using
+
+```sh
+mvn clean package
+```
+
+You can now run it 
+
+```sh
+java -jar target/todobackend-0.0.1-SNAPSHOT.jar
+```
+
+Stop it again using `Ctrl`+`C`
+
+At this point there is no otel instrument
+
+To add this use
+
+```sh
+wget https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
+```
+
+java -javaagent:./opentelemetry-javaagent.jar -jar target/todobackend-0.0.1-SNAPSHOT.jar
+
+this will run, but throw a lot of errors
+
+[otel.javaagent 2024-04-16 22:55:15:812 +0200] [OkHttp http://localhost:4318/...] ERROR io.opentelemetry.exporter.internal.http.HttpExporter - Failed to export spans. The request could not be executed. Full error message: Failed to connect to localhost/[0:0:0:0:0:0:0:1]:4318
+java.net.ConnectException: Failed to connect to localhost/[0:0:0:0:0:0:0:1]:4318
+        at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:297)
+        at okhttp3.internal.connection.RealConnection.connect(RealConnection.kt:207)
+        at okhttp3.internal.connection.ExchangeFinder.findConnection(ExchangeFinder.kt:226)
+        at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106)
+        at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74)
+        at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255)
+
+the default configuration will make the agent look for a collector, which is currently not present
+
+so we need to overwrite the default settings
+
+set the following environment variables
+
+
+
+
+
+docker run -d --name jaeger \
+  -e COLLECTOR_OTLP_ENABLED=true \
+  -p 16686:16686 \
+  -p 14268:14268 \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  jaegertracing/all-in-one
+
+
 `/src` contains a Java service that was build using Spring Boot.
 Image this is a legacy application and that observability wasn't considered during the development process.
 Hence, the service currently lacks native instrumentation.
