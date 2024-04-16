@@ -5,21 +5,14 @@ draft: false
 weight: 4
 ---
 
-### setup
-
-#### GitHub Codespaces
-If you want to use **VS Code**, you have two options.
-One option is to use GitHub codespaces.
-Open the [repository](https://github.com/JenSeReal/otel-getting-started/) in your browser, click on `Code` and `Create Codespaces on main`.
-
-#### local VS Code
-```sh
-git clone https://github.com/JenSeReal/otel-getting-started/
-```
-
-If you want to run the lab with your local VS Code, install Microsoft's Dev Containers extension.
-Open the repository folder and hit `Ctrl` + `Shift` + `P` to open the command palette.
-Run `Dev Container: Reopen in Container` attach yourself to the development container.
+### How to perform the exercise
+* You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
+* Initial directory: `labs/manual-instrumentation-logs/initial`
+* Solution directory: `labs/manual-instrumentation-logs/solution`
+* Source code: `labs/manual-instrumentation-logs/initial/src`
+* How to run the application either:
+  * Run the task for the application: `RRun manual-instrumentation-logs initial application` (runs the Python application)
+  * Run the application with Terminal commands `python3 src/app.py` (runs the Python application)
 
 ---
 

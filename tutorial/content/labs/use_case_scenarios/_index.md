@@ -4,6 +4,13 @@ draft: false
 weight: 10
 ---
 
+## How to perform the exercise
+* You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
+* Directory: `labs/otel-in-action`
+* How to run the application either:
+  * Run the task for the application: `Run otel-in-action docker` (runs docker compose)
+  * Run the application with Terminal commands `docker compose up` (runs docker compose)
+
 ## Intro
 
 This introductory lab exercise will demonstrate capabilities of OpenTelemetry from a plain end-user perspective. There will be no changes in configuration necessary. It's simply about starting a set of pre-defined containers and walk through usage scenarios.
@@ -29,7 +36,7 @@ The following diagram explains the architecture:
 
 - the OpenTelemetry Collector exports the information to various thirs-party applications
   - the (distributed) traces are exported to a Jaeger instance
-  - the metrics are exported to a Prometheus instance 
+  - the metrics are exported to a Prometheus instance
 
 {{< figure src="images/application_instrumented.png" width=700 caption="Application Architecture Instrumented" >}}
 
@@ -55,14 +62,14 @@ The output should show the startup process of the containers and all standard ou
 The beginning of the output should look similar to this:
 ```
 [+] Running 8/0
- ✔ Container python-java-otel-todolist-todoui-thymeleaf-1        Created                                                                                     0.0s 
- ✔ Container python-java-otel-todolist-postgresdb-1              Created                                                                                     0.0s 
- ✔ Container python-java-otel-todolist-loadgenerator-1           Created                                                                                     0.0s 
- ✔ Container python-java-otel-todolist-jaeger-1                  Created                                                                                     0.0s 
- ✔ Container python-java-otel-todolist-prometheus-1              Created                                                                                     0.0s 
- ✔ Container python-java-otel-todolist-todoui-flask-1            Created                                                                                     0.0s 
- ✔ Container python-java-otel-todolist-todobackend-springboot-1  Created                                                                                     0.0s 
- ✔ Container python-java-otel-todolist-otelcol-1                 Created 
+ ✔ Container python-java-otel-todolist-todoui-thymeleaf-1        Created                                                                                     0.0s
+ ✔ Container python-java-otel-todolist-postgresdb-1              Created                                                                                     0.0s
+ ✔ Container python-java-otel-todolist-loadgenerator-1           Created                                                                                     0.0s
+ ✔ Container python-java-otel-todolist-jaeger-1                  Created                                                                                     0.0s
+ ✔ Container python-java-otel-todolist-prometheus-1              Created                                                                                     0.0s
+ ✔ Container python-java-otel-todolist-todoui-flask-1            Created                                                                                     0.0s
+ ✔ Container python-java-otel-todolist-todobackend-springboot-1  Created                                                                                     0.0s
+ ✔ Container python-java-otel-todolist-otelcol-1                 Created
 ```
 
 As the ongoing output of all components can get very noisy, it is recommended to start a new terminal sessionand leave the 'docker compose up' terminal session running in the background.
@@ -338,7 +345,7 @@ You can access the web UI on the following [link](http://localhost:9090).
 
 The main entry screen looks like this:
 
-{{< figure src="images/prometheus_start_screen.png" width=700 caption="Prometheus Start Screen" >}} 
+{{< figure src="images/prometheus_start_screen.png" width=700 caption="Prometheus Start Screen" >}}
 
 There isn't much displayed right when you start. To get a list of all the metrics that are currently available click on the little icon called the metrics explorer:
 
@@ -372,7 +379,7 @@ And garbage collection duration:
 
 {{< figure src="images/prometheus_graph_jvm_gc_duration.png" width=700 caption="Prometheus Graph JVM Gargabe Collection Duration" >}}
 
-We are not going to analyze individual metrics in this chapter. This is more meant to demonstrate the breadth of information, which the standard OpenTelemetry agent for Java provides. This is similar to the analysis in the traces section. 
+We are not going to analyze individual metrics in this chapter. This is more meant to demonstrate the breadth of information, which the standard OpenTelemetry agent for Java provides. This is similar to the analysis in the traces section.
 
 If the collected metrics of the auto-configured agents are not enough, manual instrumentation can be used.
 It also becomes ovious that there are no Python or Flask metrics being collected. This is how the configuration is set up in this case.
