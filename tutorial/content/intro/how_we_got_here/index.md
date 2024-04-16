@@ -17,7 +17,7 @@ First, there is the *workload*.
 These are the operations a system performs to fulfill its objectives.
 For instance, when a user sends a request, a distributed system often breaks it down into smaller tasks handled by different services.
 Second, there are *software abstractions* that make up the structure of the distributed system.
-These includes elements such as load balancers, services, pods, containers and more.
+This includes elements such as load balancers, services, pods, containers and more.
 Lastly, there are physical machines that provide computational *resources* (e.g. RAM, CPU, disk space, network) to carry out work.
 
 {{< figure src="images/workload_resource_analysis_gregg.png" width=400 caption="workload and resource analysis [[Gregg16]](https://www.brendangregg.com/Slides/ACMApplicative2016_SystemMethodology/#18)" >}}
@@ -26,12 +26,12 @@ developers need highly detailed telemetry that they can use to pinpoint specific
 -->
 Depending on our background, we often have a certain bias when investigating the performance of / troubleshooting problems in a distributed system.
 Application developers typically concentrate on workload-related aspects, whereas operations teams tend to look at physical resources.
-To truely understand a system, we must combine insights from multiple angles and figure out how they relate to one another.
+To truly understand a system, we must combine insights from multiple angles and figure out how they relate to one another.
 However, before we can analyze something, we must first capture aspects of system behavior.
-As you may know, we commonly do this through combination of *logs*, *metrics* and *traces*.
+As you may know, we commonly do this through a combination of *logs*, *metrics* and *traces*.
 Although it seems normal today, things weren't always this way.
 But why should you be concerned about the past?
-The reason is that OpenTelemetry tries to address problems that are the result of historical developments. <!-- TODO: ref Ted Young -->.
+The reason is that OpenTelemetry tries to address problems that are the result of historical developments. <!-- TODO: ref Ted Young -->
 
 #### logs
 {{< figure src="images/logs.png" width=600 caption="Exemplary log files" >}}
@@ -48,9 +48,9 @@ hard to agree on semantics / language
 A *log* is an append-only data structure that records events occurring in a system. 
 A log entry consists of a timestamp that denotes when something happened and a message to describe details about the event. 
 However, coming up with a standardized log format is no easy task. 
-One reason is that different types of software often convey different pieces of information. Logs of an HTTP web server are bound to look different from those of the kernel. 
+One reason is that different types of software often convey different pieces of information. The logs of an HTTP web server are bound to look different from those of the kernel. 
 But even for similar software, people often have different opinions on what good logs should look like. 
-Apart from content, log formats also vary with their consumer. Initially, text-based formats catered to human readability. 
+Apart from content, log formats also vary with their consumers. Initially, text-based formats catered to human readability. 
 However, as software systems became more complex, the volume of logs soon became unmanageable.
 To combat this, we started encoding events as key/value pairs to make them machine-readable. 
 This is commonly known as structured logging. 
@@ -81,42 +81,42 @@ Instead of just looking at individual events—logs—tracing systems looked at 
 {{< figure src="images/distributed_system.drawio.png" width=400 caption="Exemplary architecture of a distributed system" >}}
 
 As distributed systems grew in scale, it became clear that traditional logging systems often fell short when trying to debug complex problems. 
-The reason is that we often have to undertand the chain of events in a system.
+The reason is that we often have to understand the chain of events in a system.
 On a single machine, stack traces allow us to track an exception back to a line of code.
 In a distributed environment, we don't have this luxury.
 Instead, we perform extensive filtering to locate log events of interest.
-To understand the larger context, we must identify other related event events. 
+To understand the larger context, we must identify other related events. 
 This often results in lots of manual labour (e.g. comparing timestamps) or requires extensive domain knowledge about the applications.
 Recognizing this problem, Google developed [Dapper](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/36356.pdf), which popularized the concept of distributed tracing.
 On a fundamental level, tracing is logging on steroids.
 The underlying idea is to add transactional context to logs.
-By indexing this based on this information, it is possible infer causality and reconstruct the journey of requests in the system.
+By indexing this based on this information, it is possible to infer causality and reconstruct the journey of requests in the system.
 
 #### three pillars of observability
 On the surface, logs, metrics, and traces share many similarities in their lifecycle and components.
 Everything starts with instrumentation that captures and emits data.
-The data has to have certain structure, which is defined by a format.
+The data has to have a certain structure, which is defined by a format.
 Then, we need a mechanism to collect and forward a piece of telemetry.
-Often there is some kind of agent to further enrich, process and batch data before ingesting it in a backend.
+Often, there is some kind of agent to further enrich, process and batch data before ingesting it in a backend.
 This typically involves a database to efficiently store, index and search large volumes of data.
 Finally, there is analysis frontend to make the data accessible to the end-user.
 However, in practice, we develop dedicated systems for each type of telemetry, and for good reason:
-Each telemetry signal poses it's own unique technical challenge.
-This is mainly due to the different nature of data.
-The design of data models, interchange formats, transmission protocols, highly depends on whether you are dealing with un- or semi-structured textual information, compact numerical values inside a time series, or graph-like structures depicting causality between events.
-Even for a single signal, there is no consensus on these kind of topics.
+Each telemetry signal poses its own unique technical challenge.
+This is mainly due to the different nature of the data.
+The design of data models, interchange formats, and transmission protocols, highly depends on whether you are dealing with un- or semi-structured textual information, compact numerical values inside a time series, or graph-like structures depicting causality between events.
+Even for a single signal, there is no consensus on these kinds of topics.
 Furthermore, the way we work with and derive insights from telemetry varies dramatically.
-A system might need to perform full-text search, inspect single events, analyze historical trends, visualize request flow, diagnose performance bottlenecks, and more.
+A system might need to perform full-text searches, inspect single events, analyze historical trends, visualize request flow, diagnose performance bottlenecks, and more.
 These requirements manifest themselves in the design and optimizations of storage,  access patterns, query capabilities and more.
 When addressing these technical challenges, [vertical integration](https://en.wikipedia.org/wiki/Vertical_integration) emerges as a pragmatic solution.
-In practice, observability vendors narrow the scope of the problem to a single signal and provide instrumentation to generate *and* tools to analyse telemetry, as a single, fully-integrated, solution. 
+In practice, observability vendors narrow the scope of the problem to a single signal and provide instrumentation to generate *and* tools to analyze telemetry, as a single, fully integrated, solution. 
 
 {{< figure src="images/three_pillars_of_observability.drawio.png" width=400 caption="The three pillars of observability, including metrics, traces and logs" >}}
 
-Having dedicated systems for logs, metrics, and traces is why we commonly refer to them as the *the three pillars of observability*.
+Having dedicated systems for logs, metrics, and traces is why we commonly refer to them as the *three pillars of observability*.
 The notion of pillars provides a great mental framework because it emphasizes that:
 - there are different categories of telemetry
-- each pillar has its unique strengths and stands on its own
+- each pillar has its own unique strengths and stands on its own
 - pillars are complementary / must be combined to form a stable foundation for achieving observability
 
 
