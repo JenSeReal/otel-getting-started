@@ -59,6 +59,8 @@ This is the ports tab of a GitHub Codespaces environment:
 
 ![Gitpod ports](images/gitpod_ports.png)
 
+Here you can see that they look almost identical. In some case you might have to hover over the address to reveal a link, sometime
+
 
 
 

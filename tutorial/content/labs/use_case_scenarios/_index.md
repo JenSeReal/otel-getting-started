@@ -103,17 +103,15 @@ Via those ports it is possible to access the various exposed UIs.
 
 If you run your application with a local container daemon, simply access them via `localhost`. If you are using a cloud-based setup like Codespaces or Gitpod , please see the section "How to use this lab".
 
-{{< ref "/introduction" >}}
-[Test](/tutorial/content/labs/introduction/)
+Especially the section about ports and hostnames is relevant here.
+[Test](/labs/introduction/#important-differences-between-local-and-remote-way-of-running-the-lab)
 
-E.g. the web UIs of the Python and Java frontend can be accessed like
+Open the `PORTS` tab on the bottom of your IDE and locate the URLs for the web UIs of the Python and Java frontends
 
-- [Python frontend](http://localhost:5001)
-- [Java frontend](http://localhost:8090)
+- Python/Flask frontend - the service with port 5001
+- Java/Thymeleaf frontend - the service with port 8090
 
-The core part of the application exposes a REST API and can also be accessed via URL
-
-- [Java frontend](http://localhost:8080/todos/)
+The core part of the application exposes a REST API and can also be accessed via URL. It is the service with port 8080.
 
 However it's of course more convenient (and better for showing distributed traces) when invoking the app through the web UIs.
 
