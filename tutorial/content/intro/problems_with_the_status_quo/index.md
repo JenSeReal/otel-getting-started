@@ -7,7 +7,7 @@ weight: 20
 
 With loads of open-source and commercial observability solutions on the market, you might (rightly) ask yourself: 
 - Why is there so much hype around OpenTelemetry?
-- If there are plenty mature solutions for generating, collecting, storing, and analysing logs, metrics and traces, why should I care?
+- If there are plenty of mature solutions for generating, collecting, storing, and analyzing logs, metrics and traces, why should I care?
 - What's wrong with the current state of observability?
 - Oh, great ... is this yet another attempt at standardization?
 
@@ -35,7 +35,7 @@ After discovering log events of interest, we often want to know about the larger
 Unfortunately, traditional logging systems lack the mechanisms to reconstruct the chain of events in that particular transaction.
 Traditional logging systems often fail to capture the full context of an operation, making it difficult to correlate events across different services or components. 
 They frequently lack the ability to preserve critical metadata, such as trace IDs or span IDs, which are essential for linking related events together. This limitation results in fragmented views of the system's behavior, where the story of a single operation is spread across multiple logs without a clear narrative. Furthermore, the absence of standardized query languages or interfaces adds to the difficulty of searching and analyzing logs effectively, as operators must rely on custom scripts or manual filtering to uncover patterns and anomalies.
-Switching the perspective from someone building an observability solution to someone using it reveals an inherent disconnect.
+Switching perspectives from someone building an observability solution to someone using it reveals an inherent disconnect.
 The real world isn't made up of logging, metrics, or tracing problems.
 Instead, we have to move back and forth between different types of telemetry to build up a mental model and reason about the behavior of a system.
 Since observability tools are silos of disconnected data, figuring out how pieces of information relate to one another causes a significant cognitive load for the operator.
@@ -47,7 +47,7 @@ Since observability tools are silos of disconnected data, figuring out how piece
 - report the same thing in different ways
 -->
 
-Another factor that makes root cause analysis hard is that telemetry data often suffers from a lack of consistency. This leads to difficulties in correlating events across different services or components, as there is no standardized way to identify related events, such as through trace IDs or span IDs. Additionally, there is no straightforward method to integrate multiple solution-specific logging libraries into a coherent system, resulting in fragmented and disjointed views of the system's behavior.
+Another factor that makes root-cause analysis hard is that telemetry data often suffers from a lack of consistency. This leads to difficulties in correlating events across different services or components, as there is no standardized way to identify related events, such as through trace IDs or span IDs. Additionally, there is no straightforward method to integrate multiple solution-specific logging libraries into a coherent system, resulting in fragmented and disjointed views of the system's behavior.
 
 #### no built-in instrumentation in open-source software
 Let's look at this from the perspective of open-source software developers.
@@ -56,9 +56,9 @@ With a majority of work being performed outside the business logic of the applic
 The people with the most knowledge of what is important when operating a piece of software are the developers and maintainers themselves.
 However, there is currently no good way to communicate through native instrumentation.
 One option would be to pick the instrumentation of an observability solution.
-However, this would add additional dependencies to the project and force users to integrate it into their system.
+However, this would add additional dependencies to the project and force users to integrate it into their systems.
 While running multiple logging and metrics systems is impractical but technically possible, tracing is outright impossible as it requires everyone to agree on a standard for trace context propagation to work.
-A common strategy for solving problems in computer science is by adding a layer of indirection.
+A common strategy for solving problems in computer science is to add a layer of indirection.
 Instead of embedding vendor-specific instrumentation, open-source developers often provide observability hooks.
 This allows users to write adapters that connect the open-source component to their observability system.
 While this approach provides greater flexibility, it also has its fair share of problems.
@@ -88,12 +88,12 @@ This up-front cost of re-instrumentation makes migration difficult, which is a f
 The last part of the equation is the observability vendors themselves.
 At first glance, vendors appear to be the only ones profiting from the current situation.
 In the past, high-quality instrumentation was a great way to differentiate yourself from the competition.
-Moreover, since developing integrations for loads of pre-existing software is expensive, the observability market had a relatively high barrier to entry.
+Moreover, since developing integrations for loads of pre-existing software is expensive, the observability market has a relatively high barrier to entry.
 With customers shying away from expensive re-instrumentation, established vendors faced less competition and pressure to innovate.
 However, they are also experiencing major pain points.
 The rate at which software is being developed has increased exponentially over the last decade.
-Today's heterogeneous software landscape made it infeasible to maintain instrumentation for every library, framework, and component.
+Today's heterogeneous software landscape makes it impossible to maintain instrumentation for every library, framework, and component.
 As soon as you start struggling with supplying instrumentation, customers will start refusing to adopt your product.
-As a result, solutions compete on who can build the best n-to-n format converter instead of investing these resources into creating great analysis tools.
-Another downside is converting data that was generated by foreign sources often leads to a degradation in the quality of telemetry.
+As a result, solutions compete over who can build the best n-to-n format converter instead of investing these resources into creating great analysis tools.
+Another downside is that converting data that was generated by foreign sources often leads to a degradation in the quality of telemetry.
 Once data is no longer well-defined, it becomes harder to analyze.
