@@ -17,41 +17,41 @@ weight: 40
 -->
 
 Only time will tell if OpenTelemetry can live up to its ambitious goals.
-Chances are, you're eager to explore the project and try it out yourself to see what the fuss it about.
+Chances are, you're eager to explore the project and try it out yourself to see what the fuss is about.
 However, newcomers often feel overwhelmed when getting into OpenTelemetry.
-The reason is clear: OpenTelemetry is a vast endeavor that addresses a multitiude of problems by creating a comprehensive observability framework.
+The reason is clear: OpenTelemetry is a vast endeavor that addresses a multitude of problems by creating a comprehensive observability framework.
 Before you dive into the labs, we want to give you a high-level overview of the structure and scope of the project.
 
 ### signal specification (language-agnostic)
 On a high level, OpenTelemetry is organized into *signals*, which mainly include *tracing*, *metrics*, *logging* and *baggage*.
-Every signal is developed as a standalone component (but there are ways to connect data streams to another.
+Every signal is developed as a standalone component (but there are ways to connect data streams to another).
 Signals are defined inside OpenTelemetry's *language-agnostic* [specification](https://opentelemetry.io/docs/specs/), which lies at the very heart of the project.
-End-user probably won't come in direct contact with the specification, but it plays an crucial role for ensuring consistency and interoperability wihtin the OpenTelemetry ecosystem.
+The end-user probably won't come into direct contact with the specification, but it plays a vital role in ensuring consistency and interoperability within the OpenTelemetry ecosystem.
 
 {{< figure src="images/otel_specification.drawio.png" width=600 caption="OpenTelemetry specification" >}}
 
 The specification consists of three parts.
 First, there are [*definitions of terms*](https://opentelemetry.io/docs/specs/otel/glossary/) that establish a common vocabulary and shared understanding to avoid confusion.
-Second, it specificies the technical details of how each signals is designed.
+Second, it specifies the technical details of how each signal is designed.
 This includes:
 - an *API specification* (see [traces](https://opentelemetry.io/docs/specs/otel/trace/api/), [metric](https://opentelemetry.io/docs/specs/otel/metrics/api/), and [logs](https://opentelemetry.io/docs/specs/otel/logs/))
   - defines (conceptual) interfaces that implementations must adhere to
-  - ensures that implemenations are compatible with each other
+  - ensures that implementations are compatible with each other
   - includes the methods that can be used to generate, process, and export telemetry data
 - a *SDK specification* (see [trace](https://opentelemetry.io/docs/specs/otel/trace/sdk/),[metrics](https://opentelemetry.io/docs/specs/otel/metrics/sdk/), [logs](https://opentelemetry.io/docs/specs/otel/logs/sdk/))
   - serves as a guide for developers 
-  - defines requirements that an language-specific implementation of the API must meet to be compliant
+  - defines requirements that a language-specific implementation of the API must meet to be compliant
   - includes concepts around the configuration, processing, and exporting of telemetry data
 
-Besides signal architecture, the specification covers aspect related to the telemetry data.
+Besides signal architecture, the specification also covers aspects related to telemetry data.
 For example, OpenTelemetry defines [semantic conventions](https://opentelemetry.io/docs/specs/semconv/).
 By pushing for consistency in the naming and interpretation of common telemetry metadata, OpenTelemetry aims to reduce the need to normalize data coming from different sources.
 Finally, there is also the [OpenTelemetry Protocol (OTLP)](https://opentelemetry.io/docs/specs/otlp/), which we'll cover later.
 
-### instrumentation to generate and emit telemetry (language-specific) 
+### vendor-agnostic instrumentation (language-specific) 
 {{< figure src="images/otel_implementation.drawio.png" width=600 caption="generate and emit telemetry via the OTel API and SDK packages" >}}
 
-To generate and emit telemetry from applications we use **language-*specific* implementations**, which adhere to OpenTelemetry's specification.
+To generate and emit telemetry from applications, we use **language-*specific* implementations**, which adhere to OpenTelemetry's specification.
 OpenTelemetry supports a wide-range of popular [programming languages](https://opentelemetry.io/docs/instrumentation/#status-and-releases) at varying levels of matureity.
 The implementation of a signal consists of two parts:
 - *API*
@@ -61,7 +61,7 @@ The implementation of a signal consists of two parts:
 - *SDK*
   - provider implement the OpenTelemetry API
   - contains the actual logic to generate, process and emit telemetry
-  - OpenTelemetry ships with official providers that serve as the reference implementation (commonly refered to as the SDK) 
+  - OpenTelemetry ships with official providers that serve as the reference implementation (commonly referred to as the SDK) 
   - possible to write your own
 
 
@@ -69,10 +69,10 @@ The implementation of a signal consists of two parts:
 Generally speaking, we use the OpenTelemetry API to add instrumentation to our source code.
 In practice, instrumentation can be achieved in various ways, such as:
 - manual instrumentation
-  - requires modification of source code
+  - requires modification of the source code
   - allows fine-grained control over what and how telemetry gets generated
 - auto-instrumentation (if available) and library instrumentation to avoid code changes
-  - can be used to getting started quickly with observability
+  - can be used to get started quickly with observability
   - collects predefined metrics, traces and logs within a library or framework
   - added after the fact by injecting an agent (or already included inside the library or framework)
   - requires close to zero code changes
@@ -80,17 +80,17 @@ In practice, instrumentation can be achieved in various ways, such as:
 
 We'll look at them later in more detail.
 <!-- API / SDK separation -->
-For now, let's focus on why OpenTelemetry decides to separate the API from the SDK.
+For now, let's focus on why OpenTelemetry decided to separate the API from the SDK.
 On startup, the application registers a provider for every type of signal.
 After that, calls to the API are forwarded to the respective provider.
 If we don't explicitly register one, OpenTelemetry will use a fallback provider that translates API calls into no-ops.
 
 The primary reason is that it makes it easier to embed native instrumentation into open-source library code.
-OpenTelemetry's API is designed to be lightwight and safe to depend on.
-The signal's implementation provided by the SDK is signifanctly more complex and likely contains dependencies to other software.
-Forcing these dependencies onto users could lead to conflicts with their particular software stack.
+OpenTelemetry's API is designed to be lightweight and safe to depend on.
+The signal's implementation provided by the SDK is significantly more complex and likely contains dependencies on other software.
+Forcing these dependencies on users could lead to conflicts with their particular software stack.
 Registering a provider during the initial setup allows users to resolve dependency conflicts by choosing a different implementation.
-Furthermore, it allows us to ship software with built-in observability, but without forcing the runtime cost of instrumentation onto users that don't need it.
+Furthermore, it allows us to ship software with built-in observability without forcing the runtime cost of instrumentation onto users that don't need it.
 
 <!-- 
 However, it comes with its own set of trade-offs.
@@ -107,9 +107,47 @@ But if OpenTelemetry is used in the right way and configured well - the benefits
 
 The benefit of instrumenting code with OpenTelemetry to collect telemetry data is that the correlation of the previously mentioned signals is simplified since all signals carry metadata. Correlating telemetry data enables you to connect and analyze data from various sources, providing a comprehensive view of your system's behavior. By setting a unique correlation ID for each telemetry item and propagating it across network boundaries, you can track the flow of data and identify dependencies between different components. OpenTelemetry's trace ID can also be leveraged for correlation, ensuring that telemetry data from the same request or transaction is associated with the same trace. Correlation engines can further enhance this process by matching data based on correlation IDs, trace IDs, or other attributes like timestamps, allowing for efficient aggregation and analysis. Correlated telemetry data provides valuable insights for troubleshooting, performance monitoring, optimization, and gaining a holistic understanding of your system's behavior. In the labs' chapter you will see how correlated data looks like. Traditionally this had to be done by hand or just by timestamps which was a tedious task. -->
 
-### collect, process and export telemetry
 
-### data transmission
-To ensure that the collected telemetry data can be collected across different frameworks, libraries or programming languages a vendor-neutral protocol was set into place. The OpenTelemetry Protocol (OTLP) is an open-source protocol for collecting and transmitting telemetry data, to back-end systems for analysis and storage. It defines a standardized data model, encoding format, and transport mechanisms to enable interoperability between telemetry tools and services from different vendors. By standardizing the way telemetry data is collected and transported, OTLP simplifies the integration of telemetry tools and services, improves data consistency, and facilitates data analysis and visualization across multiple technologies and environments.
+### telemetry processor (stand-alone component)
+{{< figure src="images/otel_collector_overview.drawio.png" width=650 caption="processing and fowarding telemetry to backends" >}}
 
-OTLP offers three transport mechanisms for transmitting telemetry data: HTTP/1.1, HTTP/2, and gRPC. When using OTLP, the choice of transport mechanism depends on application requirements, considering factors such as performance, reliability, and security. OTLP data is often encoded using the Protocol Buffers (Protobuf) binary format, which is compact and efficient for network transmission and supports schema evolution, allowing for future changes to the data model without breaking compatibility. Data can also be encoded in the JSON file format which allows for a human-readable format with the disadvantage of higher network traffic and larger file sizes. The protocol is described in the OpenTelemetry Protocol Specification.
+So far, we have seen that OpenTelemetry provides tooling for vendor-agnostic instrumentation to application and library developers.
+This alone marks a significant milestone, but OpenTelemetry's framework goes much further.
+After generating and emitting telemetry, operators are responsible for managing and ingesting it into the respective backends.
+This includes tasks such as:
+- gathering data from various sources
+- parsing and converting it for downstream processing
+- enrichment with additional metadata
+- filtering out irrelevant data to reduce noise and storage requirements
+- normalization and applying transformations 
+- buffering for resilience and performance
+- routing to steer subsets of telemetry to different destinations
+- forwarding to backends
+
+To build and configure such telemetry pipelines, operations teams often deploy additional infrastructure.
+A popular example is the [fluentbit](https://fluentbit.io/) telemetry agents.
+Similarly, OpenTelemetry provides a standalone component with these capabilities: the OpenTelemetry [Collector](https://opentelemetry.io/docs/collector/).
+
+### wire protocol
+
+Completing the package of standardization, generation and management, OpenTelemetry also defines how to transport telemetry between producers, agents, and backends.
+The [OpenTelemetry Protocol (OTLP)](https://opentelemetry.io/docs/specs/otel/protocol/) is an open-source and vendor-neutral wire format that defines:
+- how data is encoded in memory
+- a protocol to transport that data across the network
+
+As a result, OTLP is used throughout the observability stack.
+Emitting telemetry in OLTP means that instrumented applications and third-party services are compatible with countless observability solutions.
+The collector supports receiving telemetry from and exporting to a wide array of formats (e.g. Prometheus Metrics, Zipkin traces, etc.).
+However, using OTLP is generally preferred, because the Collector also uses it internally to represent and process telemetry.
+Thereby, we avoid the cost of having to convert between formats and increase consistency.
+This is because the native format closely aligns with the ideas proposed by the framework (having attributes follow semantic conventions, cross-signal correlation, etc.).
+Similarly, most observability backends support OTLP right out-of-the-box.
+Given the rapid adoption of OpenTelemetry, integrating with OTLP automatically gives you access to a wide audience of potential users.
+Moreover, an open and vendor-neutral telemetry protocol means less work for developers of observability tools.
+Before, you had to develop countless adapters to be able to ingest data arriving in various proprietary formats.
+In other words, OTLP is a significant push for interoperability between tools and services in the observability ecosystem.
+
+OTLP offers three transport mechanisms for transmitting telemetry data: HTTP/1.1, HTTP/2, and gRPC. 
+When using OTLP, the choice of transport mechanism depends on application requirements, considering factors such as performance, reliability, and security. 
+OTLP data is often encoded using the Protocol Buffers (Protobuf) binary format, which is compact and efficient for network transmission and supports schema evolution, allowing for future changes to the data model without breaking compatibility.
+Data can also be encoded in the JSON file format, which allows for a human-readable format with the disadvantage of higher network traffic and larger file sizes. 
