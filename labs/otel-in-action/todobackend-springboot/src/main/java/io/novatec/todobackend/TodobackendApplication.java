@@ -100,8 +100,10 @@ public class TodobackendApplication {
 			}
 		} 		
 		if(todo.equals("fail")){
+
 			System.out.println("Failing ...");
-			System.exit(1);
+			throw new RuntimeException();
+			
 		} 
 		return todo;
 
