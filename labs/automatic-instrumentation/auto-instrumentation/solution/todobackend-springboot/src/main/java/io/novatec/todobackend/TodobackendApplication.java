@@ -60,8 +60,6 @@ public class TodobackendApplication {
 	@GetMapping("/todos/")
 	List<String> getTodos(){
 
-		logger.info(cfInstance);
-
 		List<String> todos = new ArrayList<String>();
 
 		todoRepository.findAll().forEach(todo -> todos.add(todo.getTodo()));
