@@ -96,7 +96,8 @@ Via those ports it is possible to access the various exposed UIs.
 
 If you run your application with a local container daemon, simply access them via `localhost`. If you are using a cloud-based setup like Codespaces or Gitpod , please see the section "How to use this lab".
 
--- TODO: Build this section :-) --
+{{< ref "/introduction" >}}
+[Test](/tutorial/content/labs/introduction/)
 
 E.g. the web UIs of the Python and Java frontend can be accessed like
 
@@ -247,6 +248,60 @@ Click on the long-running span to reveal more details.
 {{< figure src="images/jaeger_trace_slow_details.png" width=700 caption="Web UI with new item" >}}
 
 This shows the details provided by the OpenTelemetry agent. With the knowledge of package, class and method name it is easier to continue debugging at this point.
+
+### Simulation of a failing component
+
+Besides the slow running component you can also simulate a failure in this lab. If you enter "fail" instead of "slow", it will cause a RuntimeException on the backend component. 
+
+{{< figure src="images/todoui_frontend_fail.png" width=700 caption="Web UI with new item" >}}
+
+This will also display an error on the frontend. It looks slightly different depending which one you use.
+
+{{< figure src="images/todoui_flask_error.png" width=700 caption="Failure on Flask side" >}}
+
+{{< figure src="images/todoui_thymeleaf_error.png" width=700 caption="Failure on Thymeleaf side" >}}
+
+Now switch back to the Jaeger UI and see how this is being displayed.
+
+If you look at the recent traces of your component you will see a trace highlighted in a different colour (red):
+
+{{< figure src="images/jaeger_traces_recent_error.png" width=700 caption="Error in recent traces" >}}
+
+Select it to show the details of the trace with errors.
+
+{{< figure src="images/jaeger_trace_with_errors.png" width=700 caption="Error in  trace" >}}
+
+It is worth to note that the error is displayed in the frontend component where it is surfaces and not in the backend where it actually happens.
+
+For those familiar with Java this is the underlying code snippet:
+
+```java
+	String someInternalMethod(@SpanAttribute String todo){
+
+		todoRepository.save(new Todo(todo));
+		
+		if(todo.equals("slow")){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} 		
+		if(todo.equals("fail")){
+
+			System.out.println("Failing ...");
+			throw new RuntimeException();
+			
+		} 
+		return todo;
+
+	}
+  ````
+
+It means that the actual value of the entered todo item is being saved to the database. Just before the method returns the RuntimeException is thrown. This is also why you see the `save` method and deeper level methods in the stack. However the invoking method is not displayed.
+
+If you expand the call of the `save` method in Jaeger you will also be able to see a warning that the parent span is missing. This one never got completed because of the breaking exception.
+
 
 ### Comparing traces
 
