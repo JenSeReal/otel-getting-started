@@ -127,6 +127,7 @@ docker run -d --name jaeger \
   jaegertracing/all-in-one
 
 
+<!--
 `/src` contains a Java service that was build using Spring Boot.
 Image this is a legacy application and that observability wasn't considered during the development process.
 Hence, the service currently lacks native instrumentation.
@@ -156,14 +157,14 @@ First, it uses maven to compile the source code into a `.jar` byte code.
 Then, it copies the files from build stage into another container, since the application doesn't require the full JDK and build tools at runtime.
 Finally, the `ENTRYPOINT` runs the application on startup.
 
-<!--
+
 It contains two stages, one for building the Java application through maven and one to run it.
 Let's create the container image via `docker build -t myorg/myapp .`
 You can start the container by executing `docker run -it -p 8080:8080 myorg/myapp`.
 Looking at `pom.xml` and theh boot process reveals that the application is built using Spring Boot.
 The application also uses other libraries besides the Spring framework (e.g. JDBC, a hsqldb ).
 As mentioned earlier, OpenTelemetry's Java agent  a rich set of [instrumentation libraries](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation).
--->
+
 
 ```Dockerfile { title="app.Dockerfile" }
 # get java agent for auto instrumentation
@@ -242,6 +243,8 @@ With everything setup, let's finally start the demo environment.
   - Grafana
     - view metric dashboards
 
+-->
+
 ### limitations of auto-instrumentation
 
 A major advantage of dynamically attaching instrumentation at runtime is that we don't have to make modifications to the application's source code.
@@ -251,6 +254,8 @@ However, as you might have guessed, it is not a magic bullet as there are inhere
 Building on top of instrumentation libraries, auto-instrumentation inherently capture telemetry data at *known* points in a library or framework.
 These points are deemed interesting from an observability perspective because they relate to actions such an incoming HTTP request, making a database query, etc.
 
+
+<!--
 ```
 show source code custom method without annotation
 ```
