@@ -13,9 +13,9 @@ weight: 10
 
 ## Intro
 
-This introductory lab exercise will demonstrate capabilities of OpenTelemetry from a plain end-user perspective. There will be no changes in configuration necessary. It's simply about starting a set of pre-defined containers and walk through usage scenarios.
+This introductory lab exercise will demonstrate capabilities of OpenTelemetry from an end-user perspective. There will be no changes in configuration necessary. It's simply about starting a set of pre-defined containers and walking through usage scenarios.
 
-The intention is to provide a high-level understanding how OpenTelemetry works, how it integrates with both application components and observability tools and become familiar with a typical setup.
+The intention is to provide a high-level understanding of how OpenTelemetry works, how it integrates with both application components and observability tools, and to become familiar with a typical setup.
 
 It furthermore provides a lookout to the various chapters of this lab.
 
@@ -25,8 +25,8 @@ The following diagram explains the architecture:
 
 - there is an simple underlying polylot, multi-service application
   - the components are implemented in Java (Spring Boot) and Python (Flask)
-  - two alternate frontend connect to a backend part, which in turn connects to a Postgres database
-  - there is a simple load-generator, which continuesly sends load to the frontend components
+  - two alternate frontends connect to a backend part, which in turn connects to a Postgres database
+  - there is a simple load generator, which continuously sends requests to the frontend components
 
 {{< figure src="images/application_diagram.png" width=700 caption="Application Architecture" >}}
 
@@ -44,7 +44,7 @@ The entire stack of components is modeled in containers and can be run using a d
 
 ## Demo environment
 
-To access the demo environment switch to the directory for this exercise:
+To access the demo environment, switch to the directory for this exercise:
 
 ```sh { title="terminal" }
 cd /workspace/exercise-use-case-scenario
@@ -56,7 +56,8 @@ Then execute the docker-compose file to build and bring up the containers.
 docker compose up
 ```
 
-The output should show the startup process of the containers and all standard out and standard error output of the running containers afterwards.
+The output should show the startup process of the containers.
+Afterwards, you should see the standard out and standard error output of the running containers.
 
 
 The beginning of the output should look similar to this:
@@ -72,11 +73,11 @@ The beginning of the output should look similar to this:
  ✔ Container python-java-otel-todolist-otelcol-1                 Created
 ```
 
-As the ongoing output of all components can get very noisy, it is recommended to start a new terminal sessionand leave the 'docker compose up' terminal session running in the background.
+As the ongoing output of all components can get very noisy, it is recommended to start a new terminal session and leave the 'docker compose up' terminal session running in the background.
 
 It will take up to two minutes on a standard machine until all containers are in a ready state.
 
-Validate the running behaviour by executing:
+Validate the running behavior by executing:
 
 ```sh { title="terminal command" }
 docker ps
@@ -113,7 +114,7 @@ Open the `PORTS` tab on the bottom of your IDE and locate the URLs for the web U
 
 The core part of the application exposes a REST API and can also be accessed via URL. It is the service with port 8080.
 
-However it's of course more convenient (and better for showing distributed traces) when invoking the app through the web UIs.
+However, it's of course more convenient (and better for showing distributed traces) when invoking the app through the web UIs.
 
 You can of course feel free to add some "ToDo" items yourself and/or set some of them done. Most likely you will also see an item called "Sample" come and go. This is being set and removed by the load generator.
 
@@ -163,33 +164,33 @@ The chapter "Collector" will provide more details on how to configure the OpenTe
 
 # Tracing
 
-OpenTelemetry allows to export the tracing information to various third-party applications. A popular Open-Source option is a tool called [Jaeger Tracing](https://jaegertracing.io)
+OpenTelemetry allows you to export the tracing information to various third-party applications. A popular Open-Source option is a tool called [Jaeger Tracing](https://jaegertracing.io)
 
 The collector in this environment is configured to export the tracing metrics to the Jaeger instance.
 
-You can access the Jaeger web UI on the following [link](http://localhost:16686)
+You can access the Jaeger web UI at the following [link](http://localhost:16686)
 
-After opening the click you will be redirected to the Search page of Jaeger. Initially there is no trace information displayed. You need to query first.
+After opening the link, you will be redirected to the Search page of Jaeger. Initially, there is no trace information displayed. You need to query first.
 
 The page you should be seeing looks like this:
 
 {{< figure src="images/jaeger_main.png" width=700 caption="Jaeger main screen" >}}
 
-On the top left corner there is a drop down list called "Services". If you expand it, it will show all services Jaeger has tracing information of.
+In the top left corner, there is a drop-down list called "Services". If you expand it, it will show all the services for which Jaeger has tracing information.
 
 {{< figure src="images/jaeger_services_selection.png" width=300 caption="Jaeger services selection" >}}
 
-It will show the various services that are currently running in the sample application. Pick the "todobackend-springboot" one and it will navigate to a page where the recently collected traces are being listed.
+It will show the various services that are currently running in the sample application. Pick the "todobackend-springboot" one and it will navigate to a page where the recently collected traces are listed.
 
 {{< figure src="images/jaeger_traces_recent.png" width=700 caption="Jaeger recent traces" >}}
 
-The diagram on top displays a distribution of collected traces over the last minutes indicating the amount of invocations with the size of the dot as well as duration on the y-axis.
+The diagram on top displays a distribution of collected traces over the last few minutes, indicating the amount of invocations with the size of the dot as well as duration on the y-axis.
 
-As the timestamps and duration times vary your screen will look certainly look a bit different from the results being displayed in the screenshots here.
+As the timestamps and duration times vary, your screen will look certainly look a bit different from the results being displayed in the screenshots here.
 
-You can alter the query parameters on the "Search" panel on the left, but since data collection has just started only the short-term results are most likely meaningful.
+You can alter the query parameters on the "Search" panel on the left, but since data collection has just started, only the short-term results are most likely meaningful.
 
-On the list of traces identify one which is called `todoui-flask: /add`
+On the list of traces, identify one that is called `todoui-flask: /add`
 
 {{< figure src="images/jaeger_trace_selection.png" width=700 caption="Individual trace" >}}
 
@@ -199,54 +200,54 @@ Click on it for further analysis. It will take you to the following screen:
 
 {{< figure src="images/jaeger_trace_todoui_flask.png" width=700 caption="Individual trace" >}}
 
-This shows the break down of duration times. The outer boundary is the overall trace, each part of it no matter of the nesting level is called a span. The different application components are highlighted in different colours, so it is easy to spot which part of the overall time was used by the backend component.
+This shows the breakdown of duration times. The outer boundary is the overall trace; each part of it, no matter the nesting level, is called a span. The different application components are highlighted in different colors, so it is easy to spot which part of the overall time was used by the backend component.
 
-There are various ways to interact with this graph. You will see arrows to colapse/expand individual or all sections. If you hover over individual parts, more details are revealed. If you click on a certain span it will expand a detail view. Pick the 2nd one in the hierarchy, which is called `todoui-flask POST`.
+There are various ways to interact with this graph. You will see arrows to collapse/expand individual or all sections. If you hover over individual parts, more details are revealed. If you click on a certain span, it will expand a detailed view. Pick the second one in the hierarchy, which is called `todoui-flask POST`.
 
 {{< figure src="images/jaeger_traces_todoui_flask_detail.png" width=700 caption="Individual trace with span details" >}}
 
-Once clicked a nested summary of details is shown right underneath the span. If you click on the little twistie left to `Tags` and `Processes` more span details are shown.
+Once clicked, a nested summary of details is shown right underneath the span. If you click on the little twistie left to `Tags` and `Processes` more span details are shown.
 
 {{< figure src="images/jaeger_span_flask_span_details.png" width=700 caption="Individual trace with more Python span details" >}}
 
-Here you can also get detailed information about the OpenTelemetry collection components being used, e.g. library name, SDK version etc.
+Here you can also get detailed information about the OpenTelemetry collection components being used, e.g. library name, SDK version, etc.
 
 Repeat the same steps and also check the details of a span within the Java component.
-Pick the one which says `todobackend-springboot TodoRepository.save`.
-This will list the details of the span which are provided by the implementation of the OpenTelemetry agent. As you can see here it's provided by the Java SDK and the Spring Data library in particular.
+Pick the one that says `todobackend-springboot TodoRepository.save`.
+This will list the details of the span that are provided by the implementation of the OpenTelemetry agent. As you can see here, it's provided by the Java SDK and the Spring Data library in particular.
 
 {{< figure src="images/jaeger_span_spring_details.png" width=700 caption="Individual trace with more Spring span details" >}}
 
-This also shows that the amount of information can totally differ between different agent implementation. They need to comply with a certain standard so that the information can be used and correlated, but the content may vary.
+This also shows that the amount of information can totally differ between different agent implementations. They need to comply with a certain standard so that the information can be used and correlated, but the content may vary.
 
-The instrumentation part of this lab will show how the information of a span can be customized.
+The instrumentation part of this lab will show how the information in a span can be customized.
 
 Feel free to browse around and look into other span details of the trace.
 
 ### Simulation of a slow component
 
-Due to the load generator and simple structure of the application the results in Jaeger won't have much deviation, so it's unlikely to spot an anomaly in behaviour here.
+Due to the load generator and simple structure of the application, the results in Jaeger won't have much deviation, so it's unlikely to spot an anomaly in behavior here.
 
-There is a simulated decrease in performance built-in, if you add an item called "slow".
+In order to simulate a decrease in performance, you can add an item called "slow".
 
 Open the Python or Java frontend and submit an item with this name.
 
 {{< figure src="images/todoui-frontend-slow.png" width=700 caption="Web UI with new item" >}}
 
 You might notice a small delay after submitting the item. The thread is paused for a second.
-It isn't much but it should however show easily how this can be spotted in the tool.
+It isn't much, but it illustrates how easily this can be spotted in the tool.
 
-Repeat the search for all traces again like we've done before and you will see a spike in the response time. If it doesn't show up straight, give it a few seconds and repeat again.
+Repeat the search for all traces again, and you will see a spike in the response time. If it doesn't show up straight, give it a few seconds and repeat again.
 
 {{< figure src="images/jaeger_traces_recent_slow.png" width=700 caption="slow" >}}
 
-You can actually click directly on the dot in the overview and it will also take you to the corresponding trace. Alternatively you can select it from the list below of course.
+You can actually click directly on the dot in the overview and it will also take you to the corresponding trace. Alternatively, you can select it from the list below.
 
 {{< figure src="images/jaeger_trace_slow.png" width=700 caption="Web UI with new item" >}}
 
-If you look at the trace now, it looks significantly different to what we've seen before. There is a dominating span compared to which all other spans look negclectably short in duration. The overall execution time is only slightly above a second whereas one span takes an entire second.
+If you look at the trace now, it looks significantly different from what we've seen before. There is a dominating span compared to which all other spans look negclectably short in duration. The overall execution time is only slightly above a second whereas one span takes an entire second.
 
-In a real world scenario isolating a poor performing component is probably not as obvious, but for showcasing how things work this should do for now.
+In a real-world scenario, isolating a poor-performing component is probably not as obvious, but for showcasing how things work, this should do for now.
 
 Click on the long-running span to reveal more details.
 
@@ -276,7 +277,7 @@ Select it to show the details of the trace with errors.
 
 {{< figure src="images/jaeger_trace_with_errors.png" width=700 caption="Error in  trace" >}}
 
-It is worth to note that the error is displayed in the frontend component where it is surfaces and not in the backend where it actually happens.
+It is worth noting that the error surfaces in the frontend component (and not in the backend, where it actually happens).
 
 For those familiar with Java this is the underlying code snippet:
 
@@ -313,7 +314,7 @@ If you expand the call of the `save` method in Jaeger you will also be able to s
 There are many things you can do with all the observability data being collected by OpenTelemetry.
 This totally depends on the third-party tool functionality how the information is being displayed.
 
-So the following part is less about what OpenTelemetry provides, but more like Jaeger evaluates it.
+So the following part is less about what OpenTelemetry provides, but more about how Jaeger evaluates it.
 
 Search for all traces with the default settings again.
 This time let's try to compare the Python to the Java invocation for the call to quuery all Todo items.
@@ -323,7 +324,7 @@ There will probably be many invocations of this type by now, any pair of them wi
 
 {{< figure src="images/jaeger_traces_compare.png" width=700 caption="Web UI with new item" >}}
 
-Click on "Compare Traces". A new window will show up displaying the traces in a visual flow next to each other. This also shows a different collection of spans for the Java and Python part to the left and an identical one for the backend on the right.
+Click on "Compare Traces". A new window will show up, displaying the traces in a visual flow next to each other. This also shows a different collection of spans for the Java and Python part to the left and an identical one for the backend on the right.
 
 {{< figure src="images/jaeger_flow_compare.png" width=700 caption="Web UI with new item" >}}
 
@@ -335,21 +336,21 @@ Next to tracing OpenTelemetry also provides the ability to export metrics inform
 
 The OpenTelemetry collector is configured to export the metrics to the Prometheus exporter. Prometheus is an open-source monitoring technology that stores metrics in a time-series database. Prometheus works in a way that it does not receive the metrics from a certain source, but scrapes the metrics from predefined sources that collect them.
 
-So in our case Prometheus is configured to talk to the collector and scrape the metrics from there.
+In our case, Prometheus is configured to talk to the collector and scrape the metrics from there.
 
-A very common way to visualize Prometheus is using dashboards of tool called Grafana. However Prometheus also has a built-in expression browser, which will do fine for this use case.
+A very common way to visualize Prometheus is via dashboards inside Grafana. However, Prometheus also has a built-in expression browser, which will do fine for this use case.
 
-You can access the web UI on the following [link](http://localhost:9090).
+You can access the web UI at the following [link](http://localhost:9090).
 
 The main entry screen looks like this:
 
 {{< figure src="images/prometheus_start_screen.png" width=700 caption="Prometheus Start Screen" >}}
 
-There isn't much displayed right when you start. To get a list of all the metrics that are currently available click on the little icon called the metrics explorer:
+There isn't much displayed right when you start. To get a list of all the metrics that are currently available, click on the little icon called the metrics explorer:
 
 {{< figure src="images/prometheus_metrics_explorer.png" width=300 caption="Prometheus Metrics Explorer" >}}
 
-This will open a pop-up window with a list of all metrics. You can scroll and select the one you like or narrow down the search by typing a certain selection string. The prefix of all the various metrics indicate the groups of collected information.
+This will open a pop-up window with a list of all metrics. You can scroll and select the one you like, or narrow down the search by typing a certain selection string. The prefix of all the various metrics indicate the groups of collected information.
 
 E.g. you can see that there is a range of metrics coming from the OpenTelemetry collector itself, if you type in "otel".
 
@@ -361,11 +362,11 @@ You will also get a list of JVM specific metrics here.
 {{< figure src="images/prometheus_jvm_metrics.png" width=700 caption="Prometheus JVM Metrics" >}}
 
 Select "JVM Thread Count". It will take you to a tabular output of the information collected so far.
-This may of course look different on your screen depending on the time you already have been collecting.
+It may look different on your screen depending on the time you  spent collecting.
 
 {{< figure src="images/prometheus_graph_jvm_thread_count.png" width=700 caption="Prometheus Table JVM Thread Count" >}}
 
-If you select the tab "Graph" instead of "Table" the data is visualized in a graphical form. You can adjust the time range as well.
+By selecting the tab "Graph" instead of "Table", the data is visualized in a graphical form. You can adjust the time range as well.
 
 {{< figure src="images/prometheus_graph_jvm_thread_count.png" width=700 caption="Prometheus Graph JVM Thread Count" >}}
 
@@ -380,5 +381,4 @@ And garbage collection duration:
 We are not going to analyze individual metrics in this chapter. This is more meant to demonstrate the breadth of information, which the standard OpenTelemetry agent for Java provides. This is similar to the analysis in the traces section.
 
 If the collected metrics of the auto-configured agents are not enough, manual instrumentation can be used.
-It also becomes ovious that there are no Python or Flask metrics being collected. This is how the configuration is set up in this case.
-
+It also becomes obvious that there are no Python or Flask metrics being collected. This is how the configuration is set up in this case.
