@@ -75,7 +75,7 @@ please switch to this directory and call `docker compose down` to stop it.
 Change to the `labs` directory within your git project root and then into the `auto-instrumentation/initial/todobackend-springboot` path.
 
 ```sh
-cd labs/auto-instrumentation/initial/todobackend-springboot
+cd labs/automatic-instrumentation/auto-instrumentation/initial/todobackend-springboot
 ```
 
 This is the same Java project as used for the backend component in the `OpenTelemetry in Action`chapter.
@@ -288,7 +288,7 @@ Now point your browser to `http://localhost:16686/`.
 If you run your application with a local container daemon, `localhost` in your browser will work. If you are using a cloud-based setup like Codespaces or Gitpod , please see the section "How to use this lab".
 
 Especially the section about ports and hostnames is relevant here.
-[Test](/labs/introduction/#important-differences-between-local-and-remote-way-of-running-the-lab)
+[Link](/labs/introduction/#important-differences-between-local-and-remote-way-of-running-the-lab)
 
 The Jaeger UI will come up. Click the button `Find traces`.
 

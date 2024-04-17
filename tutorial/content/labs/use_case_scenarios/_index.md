@@ -47,7 +47,7 @@ The entire stack of components is modeled in containers and can be run using a d
 To access the demo environment, switch to the directory for this exercise:
 
 ```sh { title="terminal" }
-cd /workspace/exercise-use-case-scenario
+cd labs/otel-in-action
 ```
 
 Then execute the docker-compose file to build and bring up the containers.
