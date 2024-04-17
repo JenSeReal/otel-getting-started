@@ -1,3 +1,5 @@
+# pyright: reportMissingTypeStubs=false, reportUnknownParameterType=false, reportMissingParameterType=false, reportUnknownArgumentType=false, reportUnknownMemberType=false, reportAttributeAccessIssue=false
+
 import socket
 
 from opentelemetry.sdk.resources import Resource, ResourceDetector

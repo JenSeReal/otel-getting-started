@@ -5,9 +5,25 @@ import time
 import requests
 from client import ChaosClient, FakerClient
 from flask import Flask, make_response
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+
+# Initialize the OpenTelemetry tracer
+trace.set_tracer_provider(TracerProvider())
+
+# Configure the OTLP exporter
+otlp_exporter = ConsoleSpanExporter()
+
+# Set up the BatchSpanProcessor with the exporter
+span_processor = BatchSpanProcessor(otlp_exporter)
+trace.get_tracer_provider().add_span_processor(span_processor)
 
 # global variables
 app = Flask(__name__)
+
+FlaskInstrumentor().instrument_app(app)
 
 @app.route("/users", methods=["GET"])
 def get_user():
