@@ -149,7 +149,10 @@ from metric_utils import create_meter
 
 # global variables
 app = Flask(__name__)
-meter = create_meter("app.py", "0.1")
+
+if __name__ == "__main__":
+    # setup metrics
+    meter = create_meter("app.py", "0.1")
 ```
 
 Finally, open `app.py` and import `create_meter`.
