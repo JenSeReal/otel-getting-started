@@ -11,6 +11,57 @@ A `MetricReader` in OpenTelemetry is an interface that defines how to read metri
 
 The metric data model in OpenTelemetry defines the structure of the data that is collected and exported by the SDK. It includes information about the resource, instrumentation library, and the actual metrics data. Here's an example of what the metric data model might look like in JSON format:
 
+```json
+{
+    "resource_metrics": [
+        {
+            "resource": {
+                "attributes": {
+                    "telemetry.sdk.language": "python",
+                    "telemetry.sdk.name": "opentelemetry",
+                    "telemetry.sdk.version": "1.24.0",
+                    "host.name": "ebdcf73e98c0",
+                    "service.name": "app.py",
+                    "service.version": "0.1"
+                },
+                "schema_url": ""
+            },
+            "scope_metrics": [
+                {
+                    "scope": {
+                        "name": "app.py",
+                        "version": "0.1",
+                        "schema_url": ""
+                    },
+                    "metrics": [
+                        {
+                            "name": "process.memory.usage",
+                            "description": "total amount of memory used",
+                            "unit": "By",
+                            "data": {
+                                "data_points": [
+                                    {
+                                        "attributes": {},
+                                        "start_time_unix_nano": 1713351214657218027,
+                                        "time_unix_nano": 1713351214657419373,
+                                        "value": 673140736
+                                    }
+                                ],
+                                "aggregation_temporality": 2,
+                                "is_monotonic": false
+                            }
+                        }
+                    ],
+                    "schema_url": ""
+                }
+            ],
+            "schema_url": ""
+        }
+    ]
+}
+
+```
+
 ### How to perform the exercise
 * You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
 * Initial directory: `labs/manual-instrumentation-metrics/initial`
