@@ -22,3 +22,8 @@ Recognizing these burdens, OpenTelemetry tries to simplify the user experience 
 For example, it is designed to integrate well with pre-existing solutions and allows for incremental migration strategies.
 This section explores the mechanisms OpenTelemetry provides for producing telemetry with zero code changes.
 This is where instrumentation libraries and auto-instrumentation come in.
+
+  - can be used to get started quickly with observability
+  - collects predefined metrics, traces and logs within a library or framework
+  - added after the fact by injecting an agent (or already included inside the library or framework)
+  - requires close to zero code changes

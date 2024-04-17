@@ -5,19 +5,6 @@ draft: false
 weight: 2
 ---
 
-<!-- TODO -->
-<!--
-insert images
-    images/codespaces.PNG
-    vscode_reopen_in_container.png
-
-explain context API
-
-resourcedetector
--->
-
-The lab environment is deliberately designed to be as minimal as possible. It aims to teach fundamental concepts of OpenTelemetry over providing a highly a realistic deployment scenario.
-
 ### How to perform the exercise
 * You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
 * Initial directory: `labs/manual-instrumentation-traces/initial`
