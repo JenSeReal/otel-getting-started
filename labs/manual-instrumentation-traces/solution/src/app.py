@@ -26,8 +26,8 @@ def restore_context_on_teardown(err):
     if previous_ctx_token:
         context.detach(previous_ctx_token)
 
-@tracer.start_as_current_span("users")
 @app.route('/users', methods=['GET'])
+@tracer.start_as_current_span("users")
 def get_user():
     user, status = db.get_user(123)
     data = {}
@@ -49,8 +49,8 @@ def do_stuff():
     url = "http://httpbin:80/anything"
     _response = requests.get(url, headers=headers)
 
-@tracer.start_as_current_span("index")
 @app.route('/')
+@tracer.start_as_current_span("index")
 def index():
     span = get_current_span()
     span.set_attributes(
