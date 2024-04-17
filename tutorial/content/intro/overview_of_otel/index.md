@@ -67,20 +67,13 @@ The implementation of a signal consists of two parts:
 
 <!-- auto and manual instrumentation -->
 Generally speaking, we use the OpenTelemetry API to add instrumentation to our source code.
-In practice, instrumentation can be achieved in various ways, such as:
-- manual instrumentation
-  - requires modification of the source code
-  - allows fine-grained control over what and how telemetry gets generated
-- auto-instrumentation (if available) and library instrumentation to avoid code changes
-  - can be used to get started quickly with observability
-  - collects predefined metrics, traces and logs within a library or framework
-  - added after the fact by injecting an agent (or already included inside the library or framework)
-  - requires close to zero code changes
-- and native instrumentation (already instrumented with OpenTelemetry)
+In practice, this can be achieved in various ways, such as:
+- manual instrumentation (for fine-grained control)
+- auto-instrumentation and instrumentation libraries (if available and to avoid code changes)
+- by using code that has already been instrumented with OpenTelemetry
 
-We'll look at them later in more detail.
 <!-- API / SDK separation -->
-For now, let's focus on why OpenTelemetry decided to separate the API from the SDK.
+For now, let's skip futher details an focus on why OpenTelemetry decided to separate the API from the SDK.
 On startup, the application registers a provider for every type of signal.
 After that, calls to the API are forwarded to the respective provider.
 If we don't explicitly register one, OpenTelemetry will use a fallback provider that translates API calls into no-ops.

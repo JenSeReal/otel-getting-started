@@ -11,8 +11,6 @@ A `MetricReader` in OpenTelemetry is an interface that defines how to read metri
 
 The metric data model in OpenTelemetry defines the structure of the data that is collected and exported by the SDK. It includes information about the resource, instrumentation library, and the actual metrics data. Here's an example of what the metric data model might look like in JSON format:
 
-The lab environment is deliberately designed to be as minimal as possible. It aims to teach fundamental concepts of OpenTelemetry over providing a highly a realistic deployment scenario.
-
 ### How to perform the exercise
 * You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
 * Initial directory: `labs/manual-instrumentation-metrics/initial`

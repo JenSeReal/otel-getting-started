@@ -5,10 +5,26 @@ draft = false
 weight = 1
 +++
 
-<!-- Welcome to the first lab!
-This lab looks at how to manually instrument an application by directly using OpenTelemetry's API and SDK.
-In doing so, we explore how each signal works.
-Thereby, we hope you gain an understanding of the fundamental concepts and terminology used by OpenTelemetry. -->
+Welcome to the lab on manual instrumentation!
+Let's look at how to instrument an application by directly using API and SDK packages provided by OpenTelemetry.
+In other words, manual instrumentation requires you to make modifications to the source code.
+This comes with its fair share of benefits and disadvantages.
+The biggest disadvantage is that if you are just starting out, writing manual instrumentation can be daunting because you:
+- need to get familiar with OpenTelemetry packages
+- must be willing to explore how telemetry signals work under the hood
+
+It's totally reasonable to think that this is asking too much of the developers in your organization.
+Another downside could be that you don't want to add observability instrumentation to your code base.
+If that's the case, don't worry; there are other options to generate and emit telemetry.
+We'll look at them in later chapters.
+
+However, there are also reasons for using manual instrumentation:
+- some languages do not support auto-instrumentation
+- provides fine-grained control over what and how telemetry gets generated
+- you want to make observability part of the development process
+- you are a library author or maintainer who wants to offer native instrumentation to your users
+
+So let's get started.
 
 <!-- 
 However, it comes with its own set of trade-offs. 
@@ -24,3 +40,4 @@ This implies that while the SDK provides a robust framework for observability, i
 It is essential to weigh these trade-offs against the benefits of OpenTelemetry to determine if it is the right fit for a particular application or organization. 
 But if OpenTelemetry is used in the right way and configured well - the benefits might
 -->
+
