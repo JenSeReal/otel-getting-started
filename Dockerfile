@@ -8,6 +8,7 @@ RUN apk upgrade --no-cache
 RUN apk add --update --no-cache \
     sudo \
     bash \
+    curl \
     gcc \
     g++ \
     python3-dev \
