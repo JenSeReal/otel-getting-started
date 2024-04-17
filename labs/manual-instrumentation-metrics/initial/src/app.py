@@ -7,11 +7,6 @@ import requests
 from client import ChaosClient, FakerClient
 from flask import Flask, make_response, request, Response
 from metric_utils import create_meter, create_request_instruments
-from opentelemetry.sdk.metrics.view import (
-    View,
-    DropAggregation,
-    ExplicitBucketHistogramAggregation,
-)
 
 # global variables
 app = Flask(__name__)
@@ -54,19 +49,6 @@ def do_stuff():
     time.sleep(0.1)
     url = "http://httpbin:80/anything"
     response = requests.get(url)
-
-def create_views() -> list[View]:
-    views = []
-    # ...
-    return views
-
-def create_meter(name: str, version: str) -> metrics.Meter:
-    views = create_views()
-    provider = MeterProvider(
-        metric_readers=[metric_reader],
-        resource=rc,
-        views=views # <-- register views
-    )
 
 @app.route("/")
 def index():
