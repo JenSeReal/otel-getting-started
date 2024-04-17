@@ -164,6 +164,8 @@ The chapter "Collector" will provide more details on how to configure the OpenTe
 
 # Tracing
 
+## Using Jaeger UI
+
 OpenTelemetry allows you to export the tracing information to various third-party applications. A popular Open-Source option is a tool called [Jaeger Tracing](https://jaegertracing.io)
 
 The collector in this environment is configured to export the tracing metrics to the Jaeger instance.

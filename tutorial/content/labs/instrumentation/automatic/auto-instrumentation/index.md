@@ -285,7 +285,16 @@ curl -X POST localhost:8080/todos/NEW
 
 Now point your browser to `http://localhost:16686/`.
 
+If you run your application with a local container daemon, `localhost` in your browser will work. If you are using a cloud-based setup like Codespaces or Gitpod , please see the section "How to use this lab".
+
+Especially the section about ports and hostnames is relevant here.
+[Test](/labs/introduction/#important-differences-between-local-and-remote-way-of-running-the-lab)
+
 The Jaeger UI will come up. Click the button `Find traces`.
+
+Please refer to the chapter "OpenTelemetry in Action" for steps how to navigate within
+
+[Using Jaeger UI](/labs/use_case_scenarios/index.html#using-jaeger-ui)
 
 <!--
 `/src` contains a Java service that was build using Spring Boot.
