@@ -31,7 +31,8 @@ RUN pip install \
     opentelemetry-api \
     opentelemetry-sdk \
     opentelemetry-exporter-prometheus \
-    opentelemetry-exporter-otlp
+    opentelemetry-exporter-otlp \
+    opentelemetry-instrumentation-flask
 
 WORKDIR /workspace
 
