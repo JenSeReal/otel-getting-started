@@ -149,14 +149,11 @@ from metric_utils import create_meter
 
 # global variables
 app = Flask(__name__)
-
-if __name__ == "__main__":
-    # setup metrics
-    meter = create_meter("app.py", "0.1")
+meter = create_meter("app.py", "0.1")
 ```
 
 Finally, open `app.py` and import `create_meter`.
-Invoke the function inside the file's main section and assign the return value to a global variable `meter`.
+Invoke the function and assign the return value to a global variable `meter`.
 
 ### create instruments to record measurements
 
