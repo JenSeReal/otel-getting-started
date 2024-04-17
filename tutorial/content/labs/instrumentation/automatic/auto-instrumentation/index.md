@@ -294,7 +294,7 @@ The Jaeger UI will come up. Click the button `Find traces`.
 
 Please refer to the chapter "OpenTelemetry in Action" for steps how to navigate within
 
-[Using Jaeger UI](/labs/use_case_scenarios/index.html#using-jaeger-ui)
+[Using Jaeger UI](/labs/use_case_scenarios/#using-jaeger-ui)
 
 <!--
 `/src` contains a Java service that was build using Spring Boot.
