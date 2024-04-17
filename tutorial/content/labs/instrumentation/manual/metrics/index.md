@@ -171,8 +171,8 @@ To illustrate this, consider a scenario where you want to measure the number of 
 Similar to the real world, there are different types of instruments depending on what you try to measure.
 OpenTelemetry provides different types of instruments to measure various aspects of your application. For example:
 - `Counters` are used for monotonically increasing values, such as the total number of requests handled by a server.
-- `UpAndDownCounters` are used to track values that can both increase and decrease, like the number of active connections to a database.
--[`Gauge`](https://opentelemetry.io/docs/specs/otel/metrics/data-model/#gauge) instruments reflect the state of a value at a given time, such as the current memory usage of a process.
+- `UpAndDownCounters` are used to track values that can both increase and decrease, like the number of active connections to a database
+- [`Gauge`](https://opentelemetry.io/docs/specs/otel/metrics/data-model/#gauge) instruments reflect the state of a value at a given time, such as the current memory usage of a process.
 - `Histogram` instruments are used to analyze the distribution of how frequently a value occurs, which can help identify trends or anomalies in the data.
 
 Each type of instrument, except for histograms, has a synchronous and asynchronous variant. Synchronous instruments are invoked in line with the application code, while asynchronous instruments register a callback function that is invoked on demand. This allows for more efficient and flexible metric collection, especially in scenarios where the metric value is expensive to compute or when the metric value changes infrequently.
