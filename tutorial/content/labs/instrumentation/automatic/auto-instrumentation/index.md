@@ -64,41 +64,75 @@ This section should highlight that auto-instrumentation is built on mechanisms s
 Other languages may lack similar native capabilities.
 Therefore, not all languages come with support for auto-instrumentation.
 
-#### excercise
+#### exercise
 
 Make sure the docker compose environment from Otel in Action chapter is stopped.
 Otherwise you will run into port conflicts.
+
+You can run `docker compose ls` to verify. If it shows a process running in the `otel-in-action` directory,
+please switch to this directory and call `docker compose down` to stop it.
+
+Change to the `labs` directory within your git project root and then into the `auto-instrumentation/initial/todobackend-springboot` path.
 
 ```sh
 cd labs/auto-instrumentation/initial/todobackend-springboot
 ```
 
-Build the project using
+This is the same Java project as used for the backend component in the `OpenTelemetry in Action`chapter.
+
+Build the project using maven:
 
 ```sh
 mvn clean package
 ```
 
-You can now run it 
+This will take a few seconds to complete. It will create an executable `jar` file which you can run.
+Run it with the following command:
 
 ```sh
 java -jar target/todobackend-0.0.1-SNAPSHOT.jar
 ```
 
+This will take the control over your terminal. The output should look like:
+
+```
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.2)
+
+2024-04-17T06:43:10.236+02:00  INFO 73702 --- [springboot-backend ] [           main] i.n.todobackend.TodobackendApplication   : Starting TodobackendApplication v0.0.1-SNAPSHOT using Java 21.0.1 with PID 
+```
+
 Stop it again using `Ctrl`+`C`
 
-At this point there is no otel instrument
+At this point there is no OpenTelemetry instrumentation present. It's just a stand-alone Spring Boot application.
 
-To add this use
+To add this download the OpenTelemetry agent from GitHub with the following command. Make sure you are still in the same directory where you successfully executed the `maven` command.
 
 ```sh
 wget https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
 ```
 
+This will download a `jar` file, which you need to attach to the Java process. You don't need to modify any code or dependency in your project, you can simply add it as `javaagent` parameter like this:
+
+```sh
 java -javaagent:./opentelemetry-javaagent.jar -jar target/todobackend-0.0.1-SNAPSHOT.jar
+```
 
-this will run, but throw a lot of errors
+Right at the start of the app you should see the following output:
 
+```
+[otel.javaagent 2024-04-17 06:56:37:329 +0200] [main] INFO io.opentelemetry.javaagent.tooling.VersionLogger - opentelemetry-javaagent - version: 2.3.0
+```
+
+This means that the agent as successfully been picked up.
+It will run the application as before, but in the output you will see a lot of errors, e.g.
+
+```
 [otel.javaagent 2024-04-16 22:55:15:812 +0200] [OkHttp http://localhost:4318/...] ERROR io.opentelemetry.exporter.internal.http.HttpExporter - Failed to export spans. The request could not be executed. Full error message: Failed to connect to localhost/[0:0:0:0:0:0:0:1]:4318
 java.net.ConnectException: Failed to connect to localhost/[0:0:0:0:0:0:0:1]:4318
         at okhttp3.internal.connection.RealConnection.connectSocket(RealConnection.kt:297)
@@ -107,17 +141,98 @@ java.net.ConnectException: Failed to connect to localhost/[0:0:0:0:0:0:0:1]:4318
         at okhttp3.internal.connection.ExchangeFinder.findHealthyConnection(ExchangeFinder.kt:106)
         at okhttp3.internal.connection.ExchangeFinder.find(ExchangeFinder.kt:74)
         at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:255)
+```
 
-the default configuration will make the agent look for a collector, which is currently not present
+Stop the application again using `Ctrl`+`C`
+The reason for this behaviour is that the agent is not configured and hence falling back to defaults.
+The default configuration will make the agent look for a collector, which is currently not present in our environment.
 
-so we need to overwrite the default settings
+So we need to overwrite the default settings. The most important one is to tell the agent to not look for a collector,
+but export all the collected information to the console.
 
-set the following environment variables
+To achieve this, set the following environment variables:
 
+```sh
+export OTEL_TRACES_EXPORTER=console
+```
 
+```sh
+export OTEL_METRICS_EXPORTER=none
+```
 
+```sh
+export OTEL_LOGS_EXPORTER=none
+```
 
+This basically means that you tell the agent to only export trace information and to not try to reach out to a collector.
 
+Now let's try again to run the application with the latest settings using:
+
+```sh
+java -javaagent:./opentelemetry-javaagent.jar -jar target/todobackend-0.0.1-SNAPSHOT.jar
+```
+
+The errors from the previous run should now disappear and you can see trace information in your console output.
+It might be difficult to spot on the first try, but there are outputs like:
+
+```
+[otel.javaagent 2024-04-17 06:56:40:731 +0200] [main] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'CREATE table testdb' : e9bdebdf58d227cdbb8f9f9f406ebd82 b657cfe82cc88e3b CLIENT [tracer: io.opentelemetry.jdbc:2.3.0-alpha] AttributesMap{data={db.operation=CREATE table, db.name=testdb, thread.name=main, thread.id=1, db.user=sa, db.connection_string=h2:mem:, db.system=h2, db.statement=create table todo (todo varchar(?) not null, primary key (todo))}, capacity=128, totalAddedValues=8}
+```
+
+This one is coming from the JDBC library for OpenTelemetry where you can see the SQL statements how Spring Boot initializes the database.
+
+Congratulations. At this point you have successfully configured your Java app with OpenTelemetry!
+
+Please let the application run within this terminal window and open another terminal. 
+In the new terminal execute a request against the application using:
+
+```sh
+curl localhost:8080/todos/
+```
+
+You should simply see an output like:
+
+```sh
+[]%
+```
+
+This is just because there are no items stored in your application.
+
+If you switch back to the terminal of the Java application process you should see plenty of information in your console output.
+
+```
+[otel.javaagent 2024-04-17 07:04:57:384 +0200] [http-nio-8080-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'SELECT testdb.todo' : 22571b7a308941882c3d203a2c1b2179 fcabde9f56343650 CLIENT [tracer: io.opentelemetry.jdbc:2.3.0-alpha] AttributesMap{data={db.operation=SELECT, db.sql.table=todo, db.name=testdb, thread.name=http-nio-8080-exec-1, thread.id=44, db.user=sa, db.connection_string=h2:mem:, db.system=h2, db.statement=select t1_0.todo from todo t1_0}, capacity=128, totalAddedValues=9}
+[otel.javaagent 2024-04-17 07:04:57:387 +0200] [http-nio-8080-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'SELECT io.novatec.todobackend.Todo' : 22571b7a308941882c3d203a2c1b2179 8a64843c1fb5217d INTERNAL [tracer: io.opentelemetry.hibernate-6.0:2.3.0-alpha] AttributesMap{data={thread.name=http-nio-8080-exec-1, thread.id=44}, capacity=128, totalAddedValues=2}
+[otel.javaagent 2024-04-17 07:04:57:397 +0200] [http-nio-8080-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'Transaction.commit' : 22571b7a308941882c3d203a2c1b2179 a5b7712f0edab44e INTERNAL [tracer: io.opentelemetry.hibernate-6.0:2.3.0-alpha] AttributesMap{data={thread.name=http-nio-8080-exec-1, thread.id=44}, capacity=128, totalAddedValues=2}
+[otel.javaagent 2024-04-17 07:04:57:397 +0200] [http-nio-8080-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'TodoRepository.findAll' : 22571b7a308941882c3d203a2c1b2179 0463a11569155a8d INTERNAL [tracer: io.opentelemetry.spring-data-1.8:2.3.0-alpha] AttributesMap{data={thread.name=http-nio-8080-exec-1, code.namespace=io.novatec.todobackend.TodoRepository, thread.id=44, code.function=findAll}, capacity=128, totalAddedValues=4}
+2024-04-17T07:04:57.397+02:00  INFO 79699 --- [springboot-backend ] [nio-8080-exec-1] i.n.todobackend.TodobackendApplication   : GET /todos/ []
+[otel.javaagent 2024-04-17 07:04:57:422 +0200] [http-nio-8080-exec-1] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'GET /todos/' : 22571b7a308941882c3d203a2c1b2179 61a3089ef357ce36 SERVER [tracer: io.opentelemetry.tomcat-10.0:2.3.0-alpha] AttributesMap{data={url.path=/todos/, thread.id=44, network.peer.address=0:0:0:0:0:0:0:1, server.address=localhost, client.address=0:0:0:0:0:0:0:1, http.response.status_code=200, http.route=/todos/, server.port=8080, http.request.method=GET, url.scheme=http, thread.name=http-nio-8080-exec-1, user_agent.original=curl/8.4.0, network.protocol.version=1.1, network.peer.port=52219}, capacity=128, totalAddedValues=14}
+```
+
+You can see multiple statements of the `otel.javaagent` but if you take a closer look each of them is originating from a different `tracer` library. You may spot jdbc, hibernate, spring data and tomcat.
+
+This is how the auto-instrumentation works here. It uses a collection of instrumentation library to trace default components, which the Java application uses here.
+
+However it makes another problem obvious: There are many spans being collected and it is hard to read on the console with the human eye.
+
+If you execute another `curl` call in your other shell to add a new item, e.g.
+
+```sh
+curl -X POST localhost:8080/todos/NEW
+```
+
+you will get a whole set of entries including the one with the `INSERT` statement.
+
+```
+[otel.javaagent 2024-04-17 07:12:33:886 +0200] [http-nio-8080-exec-2] INFO io.opentelemetry.exporter.logging.LoggingSpanExporter - 'INSERT testdb.todo' : 4877d4bdd961fbf220a98aa4a9cda57b b97f57f46d6b96e1 CLIENT [tracer: io.opentelemetry.jdbc:2.3.0-alpha] AttributesMap{data={db.operation=INSERT, db.sql.table=todo, db.name=testdb, thread.name=http-nio-8080-exec-2, thread.id=45, db.user=sa, db.connection_string=h2:mem:, db.system=h2, db.statement=insert into todo (todo) values (?)}, capacity=128, totalAddedValues=9}
+```
+
+We can make our lives easier here and export the information to a visualisation tool like Jaeger.
+First stop the application again using `Ctrl`+`C`.
+
+Now deploy an all-in-one option of the Jaeger application, which comes with a bundled OpenTelemetry collector:
+
+```sh
 docker run -d --name jaeger \
   -e COLLECTOR_OTLP_ENABLED=true \
   -p 16686:16686 \
@@ -125,7 +240,52 @@ docker run -d --name jaeger \
   -p 4317:4317 \
   -p 4318:4318 \
   jaegertracing/all-in-one
+```
 
+This will put the process into the background. Make sure it is up and running using
+
+```sh
+docker ps
+```
+
+which should include a container called `jaeger`
+
+```
+CONTAINER ID   IMAGE                      COMMAND                  CREATED         STATUS         PORTS                                                                                                                                          NAMES
+65efd5788ad6   jaegertracing/all-in-one   "/go/bin/all-in-one-…"   7 seconds ago   Up 6 seconds   5775/udp, 5778/tcp, 9411/tcp, 0.0.0.0:4317-4318->4317-4318/tcp, 0.0.0.0:14268->14268/tcp, 0.0.0.0:16686->16686/tcp, 6831-6832/udp, 14250/tcp   jaeger
+```
+
+To make sure the information will be sent to the right endpoint, reconfigure the environment variable from before:
+
+```sh
+export OTEL_TRACES_EXPORTER=otlp
+```
+
+we could additionally configure the location of the Collector by specifying:
+
+```sh
+export OTEL_COLLECTOR_HOST=localhost
+```
+
+This is however the default anyway, so we can skip that. Also we don't need to configure port as per default `4317` is being used for gRPC and `4318` for HTTP. The agent will try to look for it and of course complain if it can't reach it.
+
+Run the Java application again:
+
+```sh
+java -javaagent:./opentelemetry-javaagent.jar -jar target/todobackend-0.0.1-SNAPSHOT.jar
+```
+
+You may already notice that there is less output in the console despite the agent being present.
+
+In your second terminal execute this command again:
+
+```sh
+curl -X POST localhost:8080/todos/NEW
+```
+
+Now point your browser to `http://localhost:16686/`.
+
+The Jaeger UI will come up. Click the button `Find traces`.
 
 <!--
 `/src` contains a Java service that was build using Spring Boot.
