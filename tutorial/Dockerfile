@@ -8,9 +8,9 @@ FROM base as rt-dev
 
 WORKDIR /workspace
 
-RUN wget -qO- https://github.com/McShelby/hugo-theme-relearn/archive/main.zip | unzip -d themes -
+COPY --chmod=0755 entrypoint.sh /tmp
 
-CMD [ "hugo", "server", "--bind=0.0.0.0", "--port=80", "--poll=700" ]
+CMD [ "sh", "-c", "/tmp/entrypoint.sh" ]
 
 
 FROM base as builder

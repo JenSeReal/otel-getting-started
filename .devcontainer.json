@@ -4,25 +4,30 @@
 	"dockerComposeFile": [
 		"docker-compose.yml"
 	],
-	"service": "application",
-	"shutdownAction": "stopCompose",
 	"containerEnv": {
 		"SHELL": "/bin/bash"
 	},
+	"service": "application",
+	"shutdownAction": "stopCompose",
 	"forwardPorts": [
-		"tutorial:80",
-		"application:5000"
+		5000,
+		1313,
+		"application:5000",
+		"tutorial:80"
 	],
 	"portsAttributes": {
-		"tutorial:80": {
+		"5000": {
+			"label": "Manual instrumentation application"
+		},
+		"1313": {
 			"label": "Tutorial"
 		},
 		"application:5000": {
 			"label": "Manual instrumentation application"
+		},
+		"tutorial:80": {
+			"label": "Tutorial"
 		}
-	},
-	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
 	"customizations": {
 		"vscode": {

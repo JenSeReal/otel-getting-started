@@ -4,9 +4,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    privileged: true
     tty: true
     volumes:
-      - ./labs:/workspace
+      - ./:/workspace
     ports:
       - 5000:5000
 
@@ -18,7 +19,7 @@ services:
     build:
       context: tutorial/
       dockerfile: Dockerfile
-      target: rt
+      target: rt-dev
     tty: true
     volumes:
       - ./tutorial:/workspace
