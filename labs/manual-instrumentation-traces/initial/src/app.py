@@ -47,6 +47,9 @@ def do_stuff():
     response = requests.get(url, headers=headers)
     print("response from httpbin:")
     print(response.text)
+    response = requests.get(f"http://{request.host}/users", headers=headers)
+    print("response from /users:")
+    print(response.text)
 
 
 @app.route("/")
