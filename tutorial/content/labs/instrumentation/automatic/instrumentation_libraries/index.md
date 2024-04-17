@@ -66,6 +66,63 @@ trace.get_tracer_provider().add_span_processor(span_processor)
 
 Then the tracer provider need to be set, the exporter needs to be initialized, and we can attach the exporter to the `BatchSpanProcessor` and add the processor to the trace provider.
 
+The final result should look similar to this:
+
+```python
+import time
+
+import requests
+from client import ChaosClient, FakerClient
+from flask import Flask, make_response
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+
+# Initialize the OpenTelemetry tracer
+trace.set_tracer_provider(TracerProvider())
+
+# Configure the OTLP exporter
+otlp_exporter = ConsoleSpanExporter()
+
+# Set up the BatchSpanProcessor with the exporter
+span_processor = BatchSpanProcessor(otlp_exporter)
+trace.get_tracer_provider().add_span_processor(span_processor)
+
+# global variables
+app = Flask(__name__)
+
+FlaskInstrumentor().instrument_app(app)
+
+@app.route("/users", methods=["GET"])
+def get_user():
+    user, status = db.get_user(123)
+    data = {}
+    if user is not None:
+        data = {"id": user.id, "name": user.name, "address": user.address}
+    response = make_response(data, status)
+    return response
+
+
+def do_stuff():
+    time.sleep(0.1)
+    url = "http://httpbin:80/anything"
+    _response = requests.get(url)
+
+
+@app.route("/")
+def index():
+    do_stuff()
+    current_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime())
+    return f"Hello, World! It's currently {current_time}"
+
+
+if __name__ == "__main__":
+    db = ChaosClient(client=FakerClient())
+    app.run(host="0.0.0.0", debug=True)
+
+```
+
 In this example, when a user sends a request to the root path (`/`), the `FlaskInstrumentor` automatically creates a span for the HTTP request. This span captures details such as the request method (GET, POST, etc.), the request URL, the status code of the response, and any exceptions that occur during the processing of the request. The span also includes timing information, such as the start and end times, which help in understanding the latency of the request.
 
 The span is then processed by the `BatchSpanProcessor`, which batches multiple spans together and sends them to the configured `OTLPSpanExporter`. The exporter serializes the span data and sends it to the OpenTelemetry Collector, which then forwards the data to a backend service like Jaeger or Zipkin for storage, analysis, and visualization.
