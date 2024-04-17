@@ -327,7 +327,7 @@ Before we do that, let's look at different Collector topologies.
 A collector can run as a sidecar, node agent, or standalone service.
 
 <!-- sidecar -->
-{{< figure src="images/collector.drawio_sidecar.svg" width=400 caption="placeholder" >}}
+{{< figure src="images/collector.drawio_sidecar.svg" width=400 caption="sidecar-based collector deployment" >}}
 
 In a **sidecar-based** deployment, the collector runs as a container next to the application.
 Having a collection point to offload telemetry as quickly as possible has several advantages.
@@ -337,7 +337,7 @@ Since local communication is fast and reliable, the application won't be affecte
 This ensures that the application can spend its resources processing workloads instead of being burdened by the telemetry collection, processing, and transmission.
 
 <!-- local agent -->
-{{< figure src="images/collector.drawio_agent.svg" width=400 caption="placeholder" >}}
+{{< figure src="images/collector.drawio_agent.svg" width=400 caption="agent-based collector deployment" >}}
 
 Another option is to run a collector **agent** on every node in the cluster.
 In this case, the collector serves as a collection point for all applications running on a particular node.
@@ -349,7 +349,7 @@ It also allows us to enrich telemetry with resource attributes to describe where
 
 
 <!-- standalone service -->
-{{< figure src="images/collector.drawio_service.svg" width=400 caption="placeholder" >}}
+{{< figure src="images/collector.drawio_service.svg" width=400 caption="deploying collector as a standalone service" >}}
 
 Finally, there is the option to run the collector as a dedicated **service** in the cluster.
 It is no surprise that processing telemetry consumes memory resources and CPU cycles.

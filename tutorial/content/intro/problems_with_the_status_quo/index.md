@@ -16,7 +16,7 @@ To answer them, we must identify (some) downsides that result from building and 
 
 #### siloed telemetry is difficult to work with
 <!--
-- need data that serves the needs of the people who build and run systems
+- need data that serves the needs of the people who build and run systemsP
 - overwhelming amount of data
 - Outages take longer to detect, diagnose, and remediate
 -->
@@ -25,7 +25,7 @@ To answer them, we must identify (some) downsides that result from building and 
 First, there are deficits in the *quality* of telemetry data.
 To illustrate this, let's imagine that we want to investigate the root cause of a problem.
 The first indicator of a problem is usually an alert or an anomaly in a metrics dashboard.
-Then, ....... confirms the incident is worth investigating, he/she has to form an initial hypothesis.
+To confirm the incident is worth investigating, we have to form an initial hypothesis.
 The only information we currently have is that something happened at a particular point in time.
 Therefore, the first step is to use the metrics system to look for other metrics showing temporally correlated, abnormal behavior.
 After making an educated guess about the problem, we want to drill down and investigate the root cause of the problem.
