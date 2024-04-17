@@ -11,14 +11,10 @@ weight: 4
 * Solution directory: `labs/manual-instrumentation-logs/solution`
 * Source code: `labs/manual-instrumentation-logs/initial/src`
 * How to run the application either:
-  * Run the task for the application: `RRun manual-instrumentation-logs initial application` (runs the Python application)
+  * Run the task for the application: `Run manual-instrumentation-logs initial application` (runs the Python application)
   * Run the application with Terminal commands `python3 src/app.py` (runs the Python application)
 
 ---
-
-### Where to find the code
-You can find the code inside `manual-instrumentation-logs/initial`.
-You can run the application with the task `Run manual-instrumentation-logs initial application` or with `python3 manual-instrumentation-logs/initial/src/app.py`
 
 ### How did we get here
 
