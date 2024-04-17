@@ -66,13 +66,19 @@ Therefore, not all languages come with support for auto-instrumentation.
 
 #### exercise
 
+### How to perform the exercise
+* You need to either start the [repository](https://github.com/JenSeReal/otel-getting-started/) with Codespaces, Gitpod or clone the repository with git and run it locally with dev containers or docker compose
+* Initial directory: `labs/automatic-instrumentation/auto-instrumentation/initial`
+* Solution directory: `labs/automatic-instrumentation/auto-instrumentation/solution`
+* Source code: `labs/automatic-instrumentation/auto-instrumentation/initial/todobackend-springboot`
+
 Make sure the docker compose environment from Otel in Action chapter is stopped.
 Otherwise you will run into port conflicts.
 
 You can run `docker compose ls` to verify. If it shows a process running in the `otel-in-action` directory,
 please switch to this directory and call `docker compose down` to stop it.
 
-Change to the `labs` directory within your git project root and then into the `auto-instrumentation/initial/todobackend-springboot` path.
+Change back to the `labs` directory within your git project root and then into the `auto-instrumentation/initial/todobackend-springboot` path, e.g.
 
 ```sh
 cd labs/automatic-instrumentation/auto-instrumentation/initial/todobackend-springboot
@@ -296,6 +302,39 @@ Please refer to the chapter "OpenTelemetry in Action" for steps how to navigate 
 
 [Using Jaeger UI](/labs/use_case_scenarios/#using-jaeger-ui)
 
+Click on a trace in the list that shows a certain number of spans,
+e.g. the `POST /todos/` or GET /todos/` one.
+
+You will get a breakdown of the spans which you saw before in the console output. Jaeger has them neatly arranged,
+so you can expand and basically walk through the call stack.
+
+If you want to simulate a slow or a breaking call, you can execute:
+
+```sh
+curl -X POST localhost:8080/todos/slow
+```
+
+and accordingly:
+
+```sh
+curl -X POST localhost:8080/todos/fail
+```
+
+You can observe the different behaviour in the Jaeger console.
+
+If you are familiar with Java you can of course also look at the code in the folder: `src/main/java/io/novatec/todobackend`
+Open the TodobackendApplication.java with your VS built-in explorer.
+
+
+### limitations of auto-instrumentation
+
+A major advantage of dynamically attaching instrumentation at runtime is that we don't have to make modifications to the application's source code.
+Auto-instrumentation provides a great starting point when trying to instrument an existing application.
+The observability insights it provides are sufficient for many, while avoiding the significant time investment and understanding of OpenTelemetry's internals that is required with manual instrumentation.
+However, as you might have guessed, it is not a magic bullet as there are inherent limitations to what auto-instrumentation can do for us.
+Building on top of instrumentation libraries, auto-instrumentation inherently capture telemetry data at *known* points in a library or framework.
+These points are deemed interesting from an observability perspective because they relate to actions such an incoming HTTP request, making a database query, etc.
+
 <!--
 `/src` contains a Java service that was build using Spring Boot.
 Image this is a legacy application and that observability wasn't considered during the development process.
@@ -413,15 +452,6 @@ With everything setup, let's finally start the demo environment.
     - view metric dashboards
 
 -->
-
-### limitations of auto-instrumentation
-
-A major advantage of dynamically attaching instrumentation at runtime is that we don't have to make modifications to the application's source code.
-Auto-instrumentation provides a great starting point when trying to instrument an existing application.
-The observability insights it provides are sufficient for many, while avoiding the significant time investment and understanding of OpenTelemetry's internals that is required with manual instrumentation.
-However, as you might have guessed, it is not a magic bullet as there are inherent limitations to what auto-instrumentation can do for us.
-Building on top of instrumentation libraries, auto-instrumentation inherently capture telemetry data at *known* points in a library or framework.
-These points are deemed interesting from an observability perspective because they relate to actions such an incoming HTTP request, making a database query, etc.
 
 
 <!--
