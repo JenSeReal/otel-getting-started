@@ -14,10 +14,8 @@ def create_tracing_pipeline() -> BatchSpanProcessor:
 def create_tracer(name: str, version: str) -> trace.Tracer:
     rc = create_resource(name, version)
     processor = create_tracing_pipeline()
-    provider = TracerProvider(
-        resource=rc,
-        active_span_processor=processor
-    )
+    provider = TracerProvider(resource=rc)
+    provider.add_span_processor(processor)
     trace.set_tracer_provider(provider)
     tracer = trace.get_tracer(name, version)
     return tracer
