@@ -30,9 +30,14 @@ opentelemetry-semantic-conventions==0.42b0
 Run `pip freeze | grep opentelemetry`.
 The output reveals that OpenTelemetry's API and SDK packages have already been installed in your Python environment.
 
+### Traces in OpenTelemetry
+To generate traces in OpenTelemetry a few steps are required. With the SDK we can create a `TracingProvider` that implements the tracing API. For developers this is the central entrypoint to tracing with OpenTelemetry. The provider takes processors and ressources and saves a configuration for the tracer that is used in the source code. When generation traces the tracing pipeline that was defines sends the spans to the configured tracing backend. The simplest backend is the export to the console. But you can also define backends like Jaeger. The tracing pipeline consists of a processor and an exporter. We will use the `BatchSpanProcessor` to process spans in batches and `ConsoleSpanExporter` to export spans to the console.
+
+
+{{< figure src="images/create_tracer_configure_pipeline.drawio.png" width=650 caption="Overview of the tracing signal" >}}
+
 ### configure tracing pipeline and obtain a tracer
 
-{{< figure src="images/create_tracer_configure_pipeline.drawio.png" width=650 caption="tracing signal" >}}
 
 ```py { title="trace_utils.py" }
 # OTel SDK
@@ -487,7 +492,7 @@ Finally!
 The context propagation is working as expected!
 If we were to export spans to a tracing backend, it could analyze the SpanContext of the individual objects and piece together a distributed trace.
 
-<!-- 
+<!--
 ## quiz
 
 {{< quizdown >}}
