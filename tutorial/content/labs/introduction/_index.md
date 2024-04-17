@@ -68,3 +68,14 @@ In Gitpod the path will be:
 /workspace/otel-getting-started main $ 
 ```
 
+In GitHub codespaces the path will look however like:
+
+```
+workspaces/otel-getting-started $
+```
+
+Whereas in your local VSCode the path is only called:
+
+``` 
+/workspace
+```
