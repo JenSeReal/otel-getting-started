@@ -21,37 +21,106 @@ While instrumentation libraries offer a valuable solution for enhancing observab
 ### example
 We want to follow the previous software stack and use Python flask to show how instrumentation libraries are used. To find an appropriate library we search the registry and find the `opentelemetry-flask-instrumentation` library. We can install the library using `pip` with the command `pip install opentelemetry-flask-instrumentation`. This package provides the necessary hooks to automatically instrument your Flask application with OpenTelemetry. Next, you need to configure OpenTelemetry to use the appropriate exporters and processors. This usually involves setting up an exporter to send telemetry data to a backend service like Jaeger, Zipkin, or another OpenTelemetry-compatible service, or in this case the OpenTelemetry collector. With the library installed and OpenTelemetry configured, you can now instrument your Flask application. This involves initializing the OpenTelemetry Flask instrumentation at the start of your application and ensuring that it wraps your Flask app instance. Finally, run your Flask application as you normally would. The instrumentation will automatically capture telemetry data from incoming requests, outgoing responses, and any exceptions that occur.
 
-When using the `opentelemetry-flask-instrumentation` library with a Python Flask application, a span is automatically created for each incoming HTTP request. The span represents the execution of a single operation within the context of a trace, such as handling an HTTP request. Here's an example of how a span might be created and what it represents:
+When using the `opentelemetry-flask-instrumentation` library with a Python Flask application, a span is automatically created for each incoming HTTP request. The span represents the execution of a single operation within the context of a trace, such as handling an HTTP request. To instrument Flask we need to wrap the flask application inside the `FlaskInstrumentor` which is provided by the pip package.
 
 ```python
-from flask import Flask
+import time
+
+import requests
+from client import ChaosClient, FakerClient
+from flask import Flask, make_response
 from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+
+# global variables
+app = Flask(__name__)
+
+FlaskInstrumentor().instrument_app(app)
+```
+
+With this setup the Flask app is instrumented. Now we also need to define exporters to export the telemetry data to a collector or the console. For simplicity reasons we will export just traces to the console. To achieve this we need to import the `ConsoleSpanExporter` and `BatchSpanProcessor`, the `TracerProvider`, and the general `trace` import.
+
+```python
+import time
+
+import requests
+from client import ChaosClient, FakerClient
+from flask import Flask, make_response
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
 
 # Initialize the OpenTelemetry tracer
 trace.set_tracer_provider(TracerProvider())
 
 # Configure the OTLP exporter
-otlp_exporter = OTLPSpanExporter(endpoint="your-otel-collector-endpoint:4317")
+otlp_exporter = ConsoleSpanExporter()
+
+# Set up the BatchSpanProcessor with the exporter
+span_processor = BatchSpanProcessor(otlp_exporter)
+trace.get_tracer_provider().add_span_processor(span_processor)
+```
+
+Then the tracer provider need to be set, the exporter needs to be initialized, and we can attach the exporter to the `BatchSpanProcessor` and add the processor to the trace provider.
+
+The final result should look similar to this:
+
+```python
+import time
+
+import requests
+from client import ChaosClient, FakerClient
+from flask import Flask, make_response
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+
+# Initialize the OpenTelemetry tracer
+trace.set_tracer_provider(TracerProvider())
+
+# Configure the OTLP exporter
+otlp_exporter = ConsoleSpanExporter()
 
 # Set up the BatchSpanProcessor with the exporter
 span_processor = BatchSpanProcessor(otlp_exporter)
 trace.get_tracer_provider().add_span_processor(span_processor)
 
-# Instrument the Flask application
+# global variables
 app = Flask(__name__)
+
 FlaskInstrumentor().instrument_app(app)
 
-@app.route('/')
-def hello_world():
-    # This is where a span is automatically created for the HTTP request
-    return 'Hello, World!'
+@app.route("/users", methods=["GET"])
+def get_user():
+    user, status = db.get_user(123)
+    data = {}
+    if user is not None:
+        data = {"id": user.id, "name": user.name, "address": user.address}
+    response = make_response(data, status)
+    return response
 
-if __name__ == '__main__':
-    app.run()
+
+def do_stuff():
+    time.sleep(0.1)
+    url = "http://httpbin:80/anything"
+    _response = requests.get(url)
+
+
+@app.route("/")
+def index():
+    do_stuff()
+    current_time = time.strftime("%a, %d %b %Y %H:%M:%S", time.gmtime())
+    return f"Hello, World! It's currently {current_time}"
+
+
+if __name__ == "__main__":
+    db = ChaosClient(client=FakerClient())
+    app.run(host="0.0.0.0", debug=True)
+
 ```
 
 In this example, when a user sends a request to the root path (`/`), the `FlaskInstrumentor` automatically creates a span for the HTTP request. This span captures details such as the request method (GET, POST, etc.), the request URL, the status code of the response, and any exceptions that occur during the processing of the request. The span also includes timing information, such as the start and end times, which help in understanding the latency of the request.
@@ -106,7 +175,7 @@ When deciding what to instrument, public APIs are good candidates for tracing. S
 
 If OpenTelemetry doesn't support tracing your network client, you can use logs with verbosity or span events, which can be correlated to parent API calls. Context propagation is crucial in both inbound and outbound calls. When receiving upstream calls, context should be extracted from the incoming request/message using the Propagator API. Conversely, when making an outbound call, a new span should be created to trace the outgoing call, and the context should be injected into the message using the Propagator API. Events (or logs) and traces complement each other in providing observability. Events are better suited for verbose data and should always be attached to the span instance created by your instrumentation. Lastly, it's important to add your instrumentation library to the OpenTelemetry registry for easy discovery by users. It's also recommended testing your instrumentation with other telemetry to see how they interact.
 
-{{< quizdown >}}
+<!-- {{< quizdown >}}
 
 ### The primary purpose of developing an instrumentation library for OpenTelemetry is to provide a way to automatically instrument applications.
   - [ ] True
@@ -138,4 +207,4 @@ If OpenTelemetry doesn't support tracing your network client, you can use logs w
 - **Instrumentation Libraries**: They are tools to add OpenTelemetry support to libraries without native support.
 - **Example with Flask**: A Python Flask app can be instrumented using `opentelemetry-flask-instrumentation`.
 - **Developing Libraries**: It's important to follow OpenTelemetry conventions and focus on user-facing operations.
-- **Instrumentation Decisions**: Decide based on the complexity and necessity, considering logs or span events for unsupported clients.
+- **Instrumentation Decisions**: Decide based on the complexity and necessity, considering logs or span events for unsupported clients. -->
