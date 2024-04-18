@@ -89,7 +89,7 @@ Run `pip freeze | grep opentelemetry`.
 The output reveals that OpenTelemetry's API and SDK packages have already been installed in your Python environment.
 
 ### configure metrics pipeline and obtain a meter
-{{< figure src="images/meter.drawio_provider.svg" width=700 caption="metric signal" >}}
+{{< figure src="images/create_meter_configure_pipeline.drawio.png" width=700 caption="metric signal" >}}
 
 ```py { title="metric_utils.py" }
 # OTel SDK
@@ -166,7 +166,7 @@ An instrument reports `measurements`, which represent a data point reflecting th
 
 To illustrate this, consider a scenario where you want to measure the number of requests to a web server. You would use a meter to create an instrument, such as a counter, which is designed to track the number of occurrences of an event. Each time a request is made to the server, the counter instrument records a measurement, which is a single data point indicating that a request has occurred. Over time, these measurements are aggregated into data points, which provide a summary of the metric's behavior, such as the total number of requests received.
 
-{{< figure src="images/instrument_types.drawio.svg" width=600 caption="overview of different instruments" >}}
+{{< figure src="images/instrument_types.drawio.png" width=600 caption="overview of different instruments" >}}
 
 Similar to the real world, there are different types of instruments depending on what you try to measure.
 OpenTelemetry provides different types of instruments to measure various aspects of your application. For example:
