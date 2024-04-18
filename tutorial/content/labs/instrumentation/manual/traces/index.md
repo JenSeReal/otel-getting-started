@@ -11,12 +11,12 @@ weight: 2
 * Solution directory: `labs/manual-instrumentation-traces/solution`
 * Source code: `labs/manual-instrumentation-traces/initial/src`
 * How to run the application either:
-  * Run the task for the application: `RRun manual-instrumentation-traces initial application` (runs the Python application)
+  * Run the task for the application: `Run manual-instrumentation-traces initial application` (runs the Python application)
   * Run the application with Terminal commands `python3 src/app.py` (runs the Python application)
 
 ---
 
-Regardless of your setup, open two separate terminals with a shell in the container.
+Regardless of your setup, open two separate terminals with a shell.
 We'll use one to start the application's web server and the other to send requests to the service endpoints.
 This lab demonstrates how to add traces to a Python application. The service is built using the [Flask](https://flask.palletsprojects.com) web framework.
 We chose Python because its simple syntax keeps code snippets concise and readable.
