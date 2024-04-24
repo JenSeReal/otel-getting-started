@@ -277,7 +277,7 @@ If you look at the recent traces of your component you will see a trace highligh
 
 Select it to show the details of the trace with errors.
 
-{{< figure src="images/jaeger_trace_with_errors.png" width=700 caption="Error in  trace" >}}
+{{< figure src="images/jaeger_trace_with_error.png" width=700 caption="Error in  trace" >}}
 
 It is worth noting that the error surfaces in the frontend component (and not in the backend, where it actually happens).
 
