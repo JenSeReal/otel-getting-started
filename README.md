@@ -1,4 +1,8 @@
 # Getting Started with OpenTelemetry
+
+> [!CAUTION]
+> This repository moved to [https://github.com/NovatecConsulting/opentelemetry-training](https://github.com/NovatecConsulting/opentelemetry-training) where it will be actively maintained.
+
 This repository offers a getting started guide for OpenTelemetry, the framework for vendor-neutral telemetry data collection.
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/JenSeReal/otel-getting-started) [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/JenSeReal/otel-getting-started)
